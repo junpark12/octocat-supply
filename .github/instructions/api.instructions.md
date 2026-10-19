@@ -1,45 +1,45 @@
 ---
-description: "Guidance for editing and reviewing API code changes in the API."
+description: "API 코드 변경을 편집하고 검토하기 위한 지침."
 applyTo: "api/src/**/*.ts, api/src/**/*.py, api/package.json, api/pyproject.toml, database/migrations/**, database/seed/**, api/api-swagger.json"
 ---
-# API Review Guidance
+# API 검토 지침
 
-Focus on correctness, security, data integrity, and consistency in the Express + SQLite repository layer.
-
-
-## API Principles
-
-- Keep controllers (routes) thin: validation + orchestration; move logic to repositories/services.
-- Use parameterized SQL always; never build raw query strings with user input.
-- Return proper HTTP status codes via shared error classes (NotFound, Validation, Conflict).
-
-- Preserve consistent naming: camelCase in TypeScript models, snake_case in SQL columns with reliable mapping.
-
-- Always use Swagger Documentation served as comments at the top of our route files. Update the spec when adding/modifying endpoints.
-
-## Review Checklist
-1. Input validation: basic type/shape checks before hitting DB; reject ambiguous/partial updates.
-2. Error propagation: repository throws domain errors -> middleware -> correct status.
-3. Transactions: group multi-table writes that must succeed or fail together.
-4. Performance: watch for N+1 loops over rows triggering per-row SELECT; prefer JOIN queries.
-5. Migrations: every schema change accompanied by new sequential SQL file; no edits to prior migrations.
-6. Seed adjustments when adding required NOT NULL columns or reference data.
-7. Swagger updated: new routes, models, examples, response codes.
-
-## Data Integrity
-- Enforce foreign keys (ensure config keeps them ON) & add indexes for new FK columns.
-- Use CHECK constraints or application validation for domain rules (e.g., quantity >= 0).
-
-## Testing Guidance
-- Add unit tests for new repository methods (happy path + error cases) using in-memory DB.
-
-- For route additions, integration test hitting the real Express app (e.g., supertest) verifying status + response shape.
+Express + SQLite 리포지토리 계층의 정확성, 보안, 데이터 무결성 및 일관성에 집중하세요.
 
 
-## Security Considerations
-- Sanitize / constrain pagination (max limits) to avoid table scans.
-- Do not leak internal error stacks in production responses.
-- CORS: restrict origins if production hardened later.
+## API 원칙
 
-## Example Feedback Style
-"`ordersRepo.findWithDetails()` issues one SELECT per order detail (N+1). Consider a single JOIN query returning flattened rows then post-process."
+- Controller(라우트)는 유효성 검사와 조정만 담당하도록 가볍게 유지하고 로직은 리포지토리/서비스로 옮기세요.
+- 항상 매개변수화된 SQL을 사용하고 사용자 입력으로 원시 쿼리 문자열을 만들지 마세요.
+- 공통 오류 클래스(NotFound, Validation, Conflict)를 통해 적절한 HTTP 상태 코드를 반환하세요.
+
+- 일관된 명명 규칙을 유지하세요. TypeScript 모델은 camelCase, SQL 열은 snake_case를 사용하고 정확하게 매핑하세요.
+
+- 항상 라우트 파일 상단의 주석으로 제공되는 Swagger 문서를 사용하세요. 엔드포인트를 추가/수정하면 명세를 업데이트하세요.
+
+## 검토 체크리스트
+1. 입력 유효성 검사: DB 접근 전에 기본 타입/구조를 검사하고 모호하거나 부분적인 업데이트를 거부하세요.
+2. 오류 전파: 리포지토리의 도메인 오류 발생 -> 미들웨어 -> 올바른 상태 코드.
+3. 트랜잭션: 함께 성공하거나 실패해야 하는 여러 테이블 쓰기를 묶으세요.
+4. 성능: 각 행에서 SELECT를 실행하는 N+1 반복을 주의하고 JOIN 쿼리를 우선하세요.
+5. 마이그레이션: 모든 스키마 변경에 새 순차 SQL 파일을 추가하고 이전 마이그레이션은 수정하지 마세요.
+6. 필수 NOT NULL 열이나 참조 데이터를 추가하면 시드도 조정하세요.
+7. Swagger 업데이트: 새 라우트, 모델, 예제, 응답 코드.
+
+## 데이터 무결성
+- 외래 키를 적용하고(설정에서 ON 유지 확인) 새 FK 열에 인덱스를 추가하세요.
+- 도메인 규칙(예: quantity >= 0)에 CHECK 제약 조건 또는 애플리케이션 유효성 검사를 사용하세요.
+
+## 테스트 지침
+- in-memory DB를 사용하여 새 리포지토리 메서드의 단위 테스트(정상 경로 + 오류 사례)를 추가하세요.
+
+- 라우트를 추가하면 실제 Express 앱을 호출하는 통합 테스트(예: supertest)로 상태 코드와 응답 구조를 검증하세요.
+
+
+## 보안 고려 사항
+- 테이블 스캔을 피하도록 페이지네이션을 정제/제한하세요(최대 한도).
+- 프로덕션 응답에 내부 오류 스택을 노출하지 마세요.
+- CORS: 추후 프로덕션 보안을 강화할 때 origin을 제한하세요.
+
+## 피드백 스타일 예시
+"`ordersRepo.findWithDetails()`가 주문 상세마다 SELECT를 한 번씩 실행합니다(N+1). 단일 JOIN 쿼리로 평탄화된 행을 반환한 후 후처리하는 방식을 고려하세요."

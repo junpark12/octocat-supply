@@ -1,126 +1,126 @@
 ---
-description: 'Check DRY'
+description: 'DRY 위반 확인'
 tools: ['search', 'web/fetch', 'web/githubRepo','read', 'execute', 'azure-mcp-server/search', 'playwright/*', 'github-remote/*']
 ---
 
-# 🔍 DRY Violation Analysis & Refactoring Recommendations
+# 🔍 DRY 위반 분석 및 리팩터링 권장 사항
 
-## 🎯 Objective
-Analyze the codebase for DRY (Don't Repeat Yourself) violations and provide actionable refactoring recommendations to improve code maintainability, reduce duplication, and enhance overall code quality.
+## 🎯 목표
+코드베이스의 DRY(Don't Repeat Yourself) 위반을 분석하고 코드 유지 관리성을 높이고 중복을 줄이며 전반적인 코드 품질을 개선할 수 있는 실행 가능한 리팩터링 권장 사항을 제시하세요.
 
-## 🔎 Areas to Analyze
+## 🔎 분석 영역
 
-### 1. **API Route Patterns** 🛣️
-Examine all route files in `api/src/routes/` for:
-- **CRUD Operations**: Identical GET, POST, PUT, DELETE patterns
-- **Swagger Documentation**: Repetitive OpenAPI schema definitions
-- **Error Handling**: Duplicate 404/400/500 error responses
-- **Validation Logic**: Similar input validation patterns
-- **Response Formatting**: Repeated JSON response structures
+### 1. **API 라우트 패턴** 🛣️
+`api/src/routes/`의 모든 라우트 파일에서 다음을 살펴보세요.
+- **CRUD 작업**: 동일한 GET, POST, PUT, DELETE 패턴
+- **Swagger 문서**: 반복되는 OpenAPI 스키마 정의
+- **오류 처리**: 중복된 404/400/500 오류 응답
+- **유효성 검사 로직**: 유사한 입력 유효성 검사 패턴
+- **응답 형식 지정**: 반복되는 JSON 응답 구조
 
-### 2. **Component Patterns** ⚛️
-Analyze React components in `frontend/src/components/` for:
-- **UI Components**: Similar layout patterns, buttons, forms
-- **Data Fetching**: Duplicate API call patterns
-- **State Management**: Repetitive useState/useEffect patterns
-- **Event Handlers**: Similar onClick, onChange handlers
-- **Styling**: Duplicate CSS classes and Tailwind patterns
+### 2. **컴포넌트 패턴** ⚛️
+`frontend/src/components/`의 React 컴포넌트에서 다음을 분석하세요.
+- **UI 컴포넌트**: 유사한 레이아웃 패턴, 버튼, 폼
+- **데이터 가져오기**: 중복된 API 호출 패턴
+- **상태 관리**: 반복되는 useState/useEffect 패턴
+- **이벤트 핸들러**: 유사한 onClick, onChange 핸들러
+- **스타일링**: 중복된 CSS 클래스 및 Tailwind 패턴
 
-### 3. **Business Logic** 💼
-Check for duplicated business logic in:
-- **Model Definitions**: Similar interfaces and types
-- **Data Transformation**: Repeated mapping/formatting functions
-- **Validation Rules**: Duplicate validation logic
-- **Utility Functions**: Similar helper functions
+### 3. **비즈니스 로직** 💼
+다음에서 중복된 비즈니스 로직을 확인하세요.
+- **모델 정의**: 유사한 인터페이스 및 타입
+- **데이터 변환**: 반복되는 매핑/서식 지정 함수
+- **유효성 검사 규칙**: 중복된 유효성 검사 로직
+- **유틸리티 함수**: 유사한 헬퍼 함수
 
-### 4. **Configuration & Setup** ⚙️
-Look for configuration duplication in:
-- **Express Router Setup**: Repeated middleware patterns
-- **API Route Registration**: Similar app.use() patterns
-- **Build Configuration**: Duplicate webpack/vite settings
-- **Environment Variables**: Repeated config patterns
+### 4. **설정 및 구성** ⚙️
+다음에서 설정 중복을 찾으세요.
+- **Express Router 설정**: 반복되는 미들웨어 패턴
+- **API 라우트 등록**: 유사한 app.use() 패턴
+- **빌드 설정**: 중복된 webpack/vite 설정
+- **환경 변수**: 반복되는 설정 패턴
 
-## 📊 Analysis Framework
+## 📊 분석 프레임워크
 
-### **Severity Levels**
-- 🔴 **Critical**: Extensive duplication (>5 instances)
-- 🟡 **Moderate**: Notable duplication (3-5 instances)
-- 🟢 **Minor**: Limited duplication (2-3 instances)
+### **심각도 수준**
+- 🔴 **심각**: 광범위한 중복(>5개)
+- 🟡 **보통**: 눈에 띄는 중복(3-5개)
+- 🟢 **경미**: 제한적인 중복(2-3개)
 
-### **Refactoring Impact**
-- ⚡ **High Impact**: Affects multiple files/modules
-- 📈 **Medium Impact**: Affects single module/feature
-- 🔧 **Low Impact**: Localized improvements
+### **리팩터링 영향**
+- ⚡ **높은 영향**: 여러 파일/모듈에 영향
+- 📈 **중간 영향**: 단일 모듈/기능에 영향
+- 🔧 **낮은 영향**: 국소적인 개선
 
-## 🛠️ Recommended Refactoring Patterns
+## 🛠️ 권장 리팩터링 패턴
 
-### **For API Routes:**
-1. **Generic CRUD Controller**: Create base controller class
-2. **Middleware Abstraction**: Extract common middleware patterns
-3. **Response Helpers**: Centralize response formatting
-4. **Validation Decorators**: Reusable validation logic
+### **API 라우트:**
+1. **범용 CRUD Controller**: 기본 Controller 클래스 만들기
+2. **미들웨어 추상화**: 공통 미들웨어 패턴 추출
+3. **응답 헬퍼**: 응답 형식 지정 중앙화
+4. **유효성 검사 Decorator**: 재사용 가능한 유효성 검사 로직
 
-### **For React Components:**
-1. **Higher-Order Components**: Wrap common functionality
-2. **Custom Hooks**: Extract reusable stateful logic
-3. **Component Composition**: Break down into smaller reusable pieces
-4. **Props Interfaces**: Standardize component APIs
+### **React 컴포넌트:**
+1. **Higher-Order Components**: 공통 기능 래핑
+2. **Custom Hooks**: 재사용 가능한 상태 포함 로직 추출
+3. **컴포넌트 조합**: 더 작고 재사용 가능한 부분으로 분리
+4. **Props 인터페이스**: 컴포넌트 API 표준화
 
-### **For Business Logic:**
-1. **Service Layer**: Centralize business operations
-2. **Factory Patterns**: Create object instances consistently
-3. **Strategy Pattern**: Handle similar operations differently
-4. **Utility Modules**: Group related helper functions
+### **비즈니스 로직:**
+1. **Service Layer**: 비즈니스 작업 중앙화
+2. **Factory 패턴**: 일관된 방식으로 객체 인스턴스 생성
+3. **Strategy 패턴**: 유사한 작업을 서로 다르게 처리
+4. **유틸리티 모듈**: 관련 헬퍼 함수 그룹화
 
-## 📝 Deliverables
+## 📝 산출물
 
-### **1. Violation Report**
-Create a detailed report containing:
-- **File-by-file analysis** of duplication found
-- **Code snippets** showing exact duplicated patterns
-- **Severity assessment** using the framework above
-- **Quantified metrics** (lines duplicated, files affected)
+### **1. 위반 보고서**
+다음을 포함한 상세 보고서를 작성하세요.
+- 발견한 중복에 대한 **파일별 분석**
+- 정확한 중복 패턴을 보여 주는 **코드 스니펫**
+- 위 프레임워크를 사용한 **심각도 평가**
+- **정량화된 지표**(중복 줄 수, 영향받는 파일 수)
 
-### **2. Refactoring Plan**
-Provide a prioritized action plan with:
-- **Quick Wins**: Easy refactoring opportunities (< 2 hours)
-- **Medium Efforts**: Moderate refactoring tasks (2-8 hours)
-- **Large Projects**: Comprehensive restructuring (> 8 hours)
+### **2. 리팩터링 계획**
+다음을 포함하여 우선순위가 지정된 실행 계획을 제공하세요.
+- **빠른 개선**: 간단한 리팩터링 기회(< 2시간)
+- **중간 규모 작업**: 보통 수준의 리팩터링 작업(2-8시간)
+- **대규모 프로젝트**: 포괄적인 구조 개편(> 8시간)
 
-### **3. Implementation Suggestions**
-For each violation, provide:
-- **Before/After Code Examples**: Show current vs. refactored code
-- **Migration Steps**: Step-by-step refactoring instructions
-- **Testing Strategy**: How to validate refactoring doesn't break functionality
-- **Performance Impact**: Expected improvements in bundle size, maintainability
+### **3. 구현 제안**
+각 위반에 대해 다음을 제공하세요.
+- **변경 전/후 코드 예제**: 현재 코드와 리팩터링한 코드 비교
+- **마이그레이션 단계**: 단계별 리팩터링 지침
+- **테스트 전략**: 리팩터링이 기능을 손상하지 않는지 검증하는 방법
+- **성능 영향**: 번들 크기 및 유지 관리성의 예상 개선
 
-## 🎯 Success Criteria
+## 🎯 성공 기준
 
-- [ ] **Comprehensive Analysis**: All major code duplication identified
-- [ ] **Actionable Recommendations**: Clear, implementable suggestions
-- [ ] **Prioritized Backlog**: Tasks ranked by impact vs. effort
-- [ ] **Code Examples**: Concrete before/after demonstrations
-- [ ] **Metrics**: Quantified improvement estimates
+- [ ] **포괄적 분석**: 모든 주요 코드 중복 식별
+- [ ] **실행 가능한 권장 사항**: 명확하고 구현 가능한 제안
+- [ ] **우선순위 백로그**: 영향 대비 노력으로 작업 순위 지정
+- [ ] **코드 예제**: 구체적인 변경 전/후 시연
+- [ ] **지표**: 정량화된 개선 추정치
 
-## 🚀 Getting Started
+## 🚀 시작하기
 
-1. **Scan Route Files**: Start with `api/src/routes/` directory
-2. **Analyze Patterns**: Look for identical or nearly identical code blocks
-3. **Document Findings**: Create violation inventory with severity ratings
-4. **Propose Solutions**: Design generic abstractions and patterns
-5. **Create Examples**: Show practical refactoring implementations
+1. **라우트 파일 스캔**: `api/src/routes/` 디렉터리에서 시작
+2. **패턴 분석**: 동일하거나 거의 동일한 코드 블록 찾기
+3. **발견 사항 문서화**: 심각도 등급이 포함된 위반 목록 작성
+4. **해결책 제안**: 범용 추상화 및 패턴 설계
+5. **예제 작성**: 실제 리팩터링 구현 제시
 
-## 📚 Focus Areas for This Codebase
+## 📚 이 코드베이스의 중점 영역
 
-Based on the OctoCAT Supply Chain architecture:
+OctoCAT Supply Chain 아키텍처 기준:
 
-### **High-Priority Targets:**
-- **REST API Routes**: 8 route files with identical CRUD patterns
-- **Swagger Documentation**: Repetitive OpenAPI schema definitions
-- **Error Handling**: Duplicate 404/error responses across routes
-- **Entity Models**: Similar TypeScript interfaces
+### **높은 우선순위 대상:**
+- **REST API 라우트**: 동일한 CRUD 패턴이 있는 라우트 파일 8개
+- **Swagger 문서**: 반복되는 OpenAPI 스키마 정의
+- **오류 처리**: 여러 라우트에서 중복되는 404/오류 응답
+- **엔터티 모델**: 유사한 TypeScript 인터페이스
 
-### **Secondary Targets:**
-- **React Components**: Product display and form components
-- **API Integration**: Fetch/axios patterns in frontend
-- **Testing Patterns**: Similar test structures across files
+### **차순위 대상:**
+- **React 컴포넌트**: 상품 표시 및 폼 컴포넌트
+- **API 통합**: 프런트엔드의 Fetch/axios 패턴
+- **테스트 패턴**: 파일 간 유사한 테스트 구조

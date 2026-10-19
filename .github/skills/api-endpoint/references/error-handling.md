@@ -1,8 +1,8 @@
-# Error Handling Reference
+# 오류 처리 참고 자료
 
-This document details the error handling patterns used in the OctoCAT Supply Chain API.
+이 문서는 OctoCAT Supply Chain API에서 사용하는 오류 처리 패턴을 설명합니다.
 
-## Error Class Hierarchy
+## 오류 클래스 계층
 
 ```
 Error
@@ -12,11 +12,11 @@ Error
     └── ConflictError (409)
 ```
 
-## Error Types
+## 오류 타입
 
-### DatabaseError (Base Class)
+### DatabaseError(기본 클래스)
 
-Generic database error with customizable status code.
+상태 코드를 사용자 지정할 수 있는 일반 데이터베이스 오류입니다.
 
 ```typescript
 export class DatabaseError extends Error {
@@ -34,7 +34,7 @@ export class DatabaseError extends Error {
 
 ### NotFoundError
 
-Use when an entity is not found by ID.
+ID로 엔터티를 찾을 수 없을 때 사용하세요.
 
 ```typescript
 export class NotFoundError extends DatabaseError {
@@ -45,7 +45,7 @@ export class NotFoundError extends DatabaseError {
 }
 ```
 
-**Usage:**
+**사용법:**
 ```typescript
 throw new NotFoundError('Supplier', id);
 // → "Supplier with ID 123 not found" (404)
@@ -53,7 +53,7 @@ throw new NotFoundError('Supplier', id);
 
 ### ValidationError
 
-Use for invalid input or constraint violations.
+잘못된 입력 또는 제약 조건 위반에 사용하세요.
 
 ```typescript
 export class ValidationError extends DatabaseError {
@@ -64,7 +64,7 @@ export class ValidationError extends DatabaseError {
 }
 ```
 
-**Usage:**
+**사용법:**
 ```typescript
 throw new ValidationError('Email format is invalid');
 // → "Validation error: Email format is invalid" (400)
@@ -72,7 +72,7 @@ throw new ValidationError('Email format is invalid');
 
 ### ConflictError
 
-Use for duplicate/unique constraint violations.
+중복/고유 제약 조건 위반에 사용하세요.
 
 ```typescript
 export class ConflictError extends DatabaseError {
@@ -83,15 +83,15 @@ export class ConflictError extends DatabaseError {
 }
 ```
 
-**Usage:**
+**사용법:**
 ```typescript
 throw new ConflictError('Supplier with this email already exists');
 // → "Conflict: Supplier with this email already exists" (409)
 ```
 
-## handleDatabaseError Function
+## handleDatabaseError 함수
 
-Central error handler that converts SQLite-specific errors to appropriate types.
+SQLite 고유 오류를 적절한 타입으로 변환하는 중앙 오류 핸들러입니다.
 
 ```typescript
 export function handleDatabaseError(error: unknown, entity?: string, id?: string | number): never {
@@ -123,9 +123,9 @@ export function handleDatabaseError(error: unknown, entity?: string, id?: string
 }
 ```
 
-## Usage in Repository Methods
+## 리포지토리 메서드에서 사용
 
-Always wrap database calls in try/catch:
+데이터베이스 호출은 항상 try/catch로 감싸세요.
 
 ```typescript
 async findById(id: number): Promise<Entity | null> {
@@ -153,9 +153,9 @@ async update(id: number, data: Partial<Entity>): Promise<Entity> {
 }
 ```
 
-## Usage in Route Handlers
+## 라우트 핸들러에서 사용
 
-Check error types and respond appropriately:
+오류 타입을 확인하고 적절하게 응답하세요.
 
 ```typescript
 router.put('/:id', async (req, res, next) => {
@@ -173,9 +173,9 @@ router.put('/:id', async (req, res, next) => {
 });
 ```
 
-## Error Middleware
+## 오류 미들웨어
 
-The global error handler in `index.ts` catches unhandled errors:
+`index.ts`의 전역 오류 핸들러가 처리되지 않은 오류를 잡습니다.
 
 ```typescript
 export function errorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction): void {
@@ -199,9 +199,9 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
 }
 ```
 
-## JSON Error Response Format
+## JSON 오류 응답 형식
 
-All API errors return consistent JSON:
+모든 API 오류는 일관된 JSON을 반환합니다.
 
 ```json
 {
@@ -212,9 +212,9 @@ All API errors return consistent JSON:
 }
 ```
 
-## Best Practices
+## 모범 사례
 
-1. **Always use handleDatabaseError** - Don't throw raw errors from repositories
-2. **Provide context** - Pass entity name and ID to `handleDatabaseError()` for meaningful messages
-3. **Check specific error types first** - Handle `NotFoundError` explicitly in routes before delegating to `next()`
-4. **Use appropriate error types** - `NotFoundError` for missing entities, `ValidationError` for bad input, `ConflictError` for duplicates
+1. **항상 handleDatabaseError 사용** - 리포지토리에서 원시 오류를 던지지 마세요.
+2. **맥락 제공** - 의미 있는 메시지를 위해 엔터티 이름과 ID를 `handleDatabaseError()`에 전달하세요.
+3. **구체적인 오류 타입부터 확인** - `next()`에 위임하기 전에 라우트에서 `NotFoundError`를 명시적으로 처리하세요.
+4. **적절한 오류 타입 사용** - 누락된 엔터티는 `NotFoundError`, 잘못된 입력은 `ValidationError`, 중복은 `ConflictError`를 사용하세요.

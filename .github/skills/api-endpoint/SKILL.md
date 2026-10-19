@@ -1,36 +1,36 @@
 ---
 name: api-endpoint
-description: Generate REST API endpoints for the OctoCAT Supply Chain application following established patterns. Use this skill when creating new CRUD endpoints, adding routes, implementing repository classes, or defining TypeScript models with Swagger documentation. Triggers on requests to add API features, create endpoints, implement data access layers, or extend the Express.js backend.
+description: 확립된 패턴에 따라 OctoCAT Supply Chain 애플리케이션의 REST API 엔드포인트를 생성합니다. 새 CRUD 엔드포인트 생성, 라우트 추가, 리포지토리 클래스 구현 또는 Swagger 문서가 있는 TypeScript 모델 정의 시 이 스킬을 사용하세요. API 기능 추가, 엔드포인트 생성, 데이터 접근 계층 구현 또는 Express.js 백엔드 확장 요청 시 활성화됩니다.
 ---
 
-# API Endpoint Development
+# API 엔드포인트 개발
 
-This skill guides the creation of REST API endpoints following the OctoCAT Supply Chain application's established patterns.
+이 스킬은 OctoCAT Supply Chain 애플리케이션의 확립된 패턴에 따른 REST API 엔드포인트 생성을 안내합니다.
 
-## Architecture Overview
+## 아키텍처 개요
 
-The API follows a layered architecture:
+API는 계층형 아키텍처를 따릅니다.
 ```
 Routes (Express.js) → Repository (Data Access) → SQLite Database
      ↓                      ↓
    Models              SQL Utilities
 ```
 
-## When to Use This Skill
+## 이 스킬을 사용할 때
 
-- Creating new CRUD endpoints for entities
-- Adding a new model/entity to the system
-- Implementing repository classes for data access
-- Writing Swagger/OpenAPI documentation
-- Extending existing routes with new operations
+- 엔터티의 새 CRUD 엔드포인트 생성
+- 시스템에 새 모델/엔터티 추가
+- 데이터 접근용 리포지토리 클래스 구현
+- Swagger/OpenAPI 문서 작성
+- 기존 라우트에 새 작업 추가
 
-## Workflow
+## 워크플로
 
-### Step 1: Define the Model
+### 1단계: 모델 정의
 
-Create a TypeScript interface in `api/src/models/{entity}.ts` with Swagger schema documentation.
+`api/src/models/{entity}.ts`에 Swagger 스키마 문서가 있는 TypeScript 인터페이스를 만드세요.
 
-**Pattern:**
+**패턴:**
 ```typescript
 /**
  * @swagger
@@ -57,16 +57,16 @@ export interface EntityName {
 }
 ```
 
-**Key conventions:**
-- Primary key: `{entityName}Id` (camelCase)
-- Use `boolean` for flags, `string` for dates (ISO format)
-- Include Swagger `@swagger` JSDoc comments above the interface
+**핵심 규칙:**
+- 기본 키: `{entityName}Id`(camelCase)
+- 플래그는 `boolean`, 날짜는 `string`(ISO 형식) 사용
+- 인터페이스 위에 Swagger `@swagger` JSDoc 주석 포함
 
-### Step 2: Create the Repository
+### 2단계: 리포지토리 생성
 
-Create `api/src/repositories/{entityName}sRepo.ts` following the repository pattern.
+repository 패턴에 따라 `api/src/repositories/{entityName}sRepo.ts`를 만드세요.
 
-**Required imports:**
+**필수 import:**
 ```typescript
 import { getDatabase, DatabaseConnection } from '../db/sqlite';
 import { EntityName } from '../models/entityName';
@@ -74,7 +74,7 @@ import { handleDatabaseError, NotFoundError } from '../utils/errors';
 import { buildInsertSQL, buildUpdateSQL, objectToCamelCase, mapDatabaseRows, DatabaseRow } from '../utils/sql';
 ```
 
-**Repository class structure:**
+**리포지토리 클래스 구조:**
 ```typescript
 export class EntityNamesRepository {
   private db: DatabaseConnection;
@@ -148,7 +148,7 @@ export class EntityNamesRepository {
 }
 ```
 
-**Add factory and singleton pattern:**
+**factory 및 singleton 패턴 추가:**
 ```typescript
 export async function createEntityNamesRepository(isTest: boolean = false): Promise<EntityNamesRepository> {
   const db = await getDatabase(isTest);
@@ -165,11 +165,11 @@ export async function getEntityNamesRepository(isTest: boolean = false): Promise
 }
 ```
 
-### Step 3: Create the Route
+### 3단계: 라우트 생성
 
-Create `api/src/routes/{entityName}.ts` with Swagger documentation and Express handlers.
+Swagger 문서와 Express 핸들러가 있는 `api/src/routes/{entityName}.ts`를 만드세요.
 
-**Swagger documentation pattern (at top of file):**
+**Swagger 문서 패턴(파일 상단):**
 ```typescript
 /**
  * @swagger
@@ -258,7 +258,7 @@ Create `api/src/routes/{entityName}.ts` with Swagger documentation and Express h
  */
 ```
 
-**Route handlers:**
+**라우트 핸들러:**
 ```typescript
 import express from 'express';
 import { EntityName } from '../models/entityName';
@@ -337,29 +337,29 @@ router.delete('/:id', async (req, res, next) => {
 export default router;
 ```
 
-### Step 4: Register the Route
+### 4단계: 라우트 등록
 
-In `api/src/index.ts`, add:
+`api/src/index.ts`에 다음을 추가하세요.
 ```typescript
 import entityNameRoutes from './routes/entityName';
 // ...
 app.use('/api/entity-names', entityNameRoutes);
 ```
 
-### Step 5: Create Database Migration
+### 5단계: 데이터베이스 마이그레이션 생성
 
-See `references/database-conventions.md` for migration file conventions.
+마이그레이션 파일 규칙은 `references/database-conventions.md`를 참고하세요.
 
-### Step 6: Create Seed Data
+### 6단계: 시드 데이터 생성
 
-**Always create seed data** for new entities in `api/sql/seed/{NNN}_{entity_names}.sql`.
+새 엔터티에는 `api/sql/seed/{NNN}_{entity_names}.sql`에 **항상 시드 데이터를 만드세요**.
 
-**Seed file naming convention:**
-- Use the next sequential number (e.g., `005_categories.sql`)
-- Use snake_case plural entity name
-- Place in `api/sql/seed/` directory
+**시드 파일 명명 규칙:**
+- 다음 순번 사용(예: `005_categories.sql`)
+- snake_case 복수형 엔터티 이름 사용
+- `api/sql/seed/` 디렉터리에 배치
 
-**Seed data best practices:**
+**시드 데이터 모범 사례:**
 ```sql
 -- 005_entity_names.sql
 -- Seed data for entity_names table
@@ -372,16 +372,16 @@ INSERT INTO entity_names (entity_name_id, name, description, status, created_at)
   (4, 'Example Entity 4', 'Fourth example for edge cases', 'pending', '2024-01-18T14:45:00.000Z');
 ```
 
-**Guidelines for seed data:**
-- Provide 3-5 realistic examples per entity
-- Use explicit IDs for referential integrity with related entities
-- Include variety: different statuses, dates, edge cases
-- Use ISO 8601 format for dates (`YYYY-MM-DDTHH:mm:ss.sssZ`)
-- Add comments explaining the purpose
-- Include data that tests boundaries (empty strings, nulls where allowed, max lengths)
-- For foreign keys, reference existing seed data from other tables
+**시드 데이터 지침:**
+- 엔터티마다 현실적인 예제 3-5개 제공
+- 관련 엔터티와의 참조 무결성을 위해 명시적 ID 사용
+- 다양한 상태, 날짜, 경계 사례 포함
+- 날짜는 ISO 8601 형식(`YYYY-MM-DDTHH:mm:ss.sssZ`) 사용
+- 목적을 설명하는 주석 추가
+- 경계 테스트 데이터 포함(빈 문자열, 허용되는 null, 최대 길이)
+- 외래 키는 다른 테이블의 기존 시드 데이터 참조
 
-**Example with relationships:**
+**관계가 있는 예제:**
 ```sql
 -- Reference existing suppliers (from 001_suppliers.sql)
 INSERT INTO entity_names (entity_name_id, name, supplier_id, stock_quantity) VALUES
@@ -390,56 +390,56 @@ INSERT INTO entity_names (entity_name_id, name, supplier_id, stock_quantity) VAL
   (3, 'Widget C', 2, 200);  -- Different supplier
 ```
 
-### Step 7: Create Unit Tests
+### 7단계: 단위 테스트 생성
 
-**Always create unit tests** for new repositories in `api/src/repositories/{entity}sRepo.test.ts`.
+새 리포지토리에는 `api/src/repositories/{entity}sRepo.test.ts`에 **항상 단위 테스트를 만드세요**.
 
-See `references/testing-patterns.md` for:
-- Complete test file structure and patterns
-- Required test coverage for all CRUD operations
-- Mock setup and assertions
-- Optional route integration testing
-- Commands for running tests
+다음 내용은 `references/testing-patterns.md`를 참고하세요.
+- 전체 테스트 파일 구조 및 패턴
+- 모든 CRUD 작업의 필수 테스트 커버리지
+- Mock 설정 및 검증
+- 선택적 라우트 통합 테스트
+- 테스트 실행 명령
 
-**Test coverage requirements:**
-- ✅ All CRUD operations (create, read, update, delete, exists)
-- ✅ Success cases with valid data
-- ✅ Edge cases (empty results, null values, boundary conditions)
-- ✅ Error cases (database failures, not found scenarios, constraint violations)
-- ✅ Mock verification (correct SQL queries and parameters)
+**테스트 커버리지 요구 사항:**
+- ✅ 모든 CRUD 작업(create, read, update, delete, exists)
+- ✅ 유효한 데이터의 성공 사례
+- ✅ 경계 사례(빈 결과, null 값, 경계 조건)
+- ✅ 오류 사례(데이터베이스 실패, 찾을 수 없는 경우, 제약 조건 위반)
+- ✅ Mock 검증(올바른 SQL 쿼리 및 매개변수)
 
-## Naming Conventions
+## 명명 규칙
 
-| Context | Convention | Example |
+| 맥락 | 규칙 | 예제 |
 |---------|------------|---------|
-| TypeScript interface | PascalCase | `Supplier` |
-| Interface property | camelCase | `supplierId` |
-| Database table | snake_case, plural | `suppliers` |
-| Database column | snake_case | `supplier_id` |
-| Route path | kebab-case, plural | `/api/suppliers` |
-| Repository class | PascalCase + Repository | `SuppliersRepository` |
-| Route file | camelCase.ts | `supplier.ts` |
+| TypeScript 인터페이스 | PascalCase | `Supplier` |
+| 인터페이스 속성 | camelCase | `supplierId` |
+| 데이터베이스 테이블 | snake_case, 복수형 | `suppliers` |
+| 데이터베이스 열 | snake_case | `supplier_id` |
+| 라우트 경로 | kebab-case, 복수형 | `/api/suppliers` |
+| 리포지토리 클래스 | PascalCase + Repository | `SuppliersRepository` |
+| 라우트 파일 | camelCase.ts | `supplier.ts` |
 
-## Error Handling
+## 오류 처리
 
-Use custom error types from `utils/errors.ts`:
-- `NotFoundError(entity, id)` - 404 responses
-- `ValidationError(message)` - 400 responses  
-- `ConflictError(message)` - 409 responses
-- `DatabaseError(message, code, statusCode)` - Generic DB errors
+`utils/errors.ts`의 사용자 지정 오류 타입을 사용하세요.
+- `NotFoundError(entity, id)` - 404 응답
+- `ValidationError(message)` - 400 응답  
+- `ConflictError(message)` - 409 응답
+- `DatabaseError(message, code, statusCode)` - 일반 DB 오류
 
-Always wrap repository calls in try/catch and use `handleDatabaseError()` for consistent error conversion.
+리포지토리 호출은 항상 try/catch로 감싸고 일관된 오류 변환을 위해 `handleDatabaseError()`를 사용하세요.
 
-## SQL Utilities
+## SQL 유틸리티
 
-Available helpers from `utils/sql.ts`:
-- `buildInsertSQL(table, data)` - Generate INSERT with placeholders
-- `buildUpdateSQL(table, data, whereClause)` - Generate UPDATE with placeholders
-- `objectToCamelCase<T>(row)` - Convert single DB row to typed model
-- `mapDatabaseRows<T>(rows)` - Convert array of DB rows to typed models
-- `toSnakeCase(str)` / `toCamelCase(str)` - String conversion
+`utils/sql.ts`에서 사용 가능한 헬퍼:
+- `buildInsertSQL(table, data)` - 플레이스홀더가 있는 INSERT 생성
+- `buildUpdateSQL(table, data, whereClause)` - 플레이스홀더가 있는 UPDATE 생성
+- `objectToCamelCase<T>(row)` - 단일 DB 행을 타입이 지정된 모델로 변환
+- `mapDatabaseRows<T>(rows)` - DB 행 배열을 타입이 지정된 모델로 변환
+- `toSnakeCase(str)` / `toCamelCase(str)` - 문자열 변환
 
-## File Locations
+## 파일 위치
 
 ```
 api/src/
@@ -452,24 +452,24 @@ api/src/
 └── index.ts                   # Route registration
 ```
 
-## Quick Reference: Complete Checklist
+## 빠른 참고: 전체 체크리스트
 
-When creating a new API endpoint, ensure you complete ALL steps:
+새 API 엔드포인트를 만들 때 모든 단계를 완료하세요.
 
-- [ ] **Model** (`api/src/models/{entity}.ts`) - TypeScript interface + Swagger schema
-- [ ] **Repository** (`api/src/repositories/{entity}sRepo.ts`) - Data access with all CRUD methods
-- [ ] **Route** (`api/src/routes/{entity}.ts`) - Express handlers + Swagger docs
-- [ ] **Register** (`api/src/index.ts`) - Add route to Express app
-- [ ] **Migration** (`api/sql/migrations/{NNN}_{description}.sql`) - CREATE TABLE statement
-- [ ] **Seed Data** (`api/sql/seed/{NNN}_{entity_names}.sql`) - 3-5 realistic examples
-- [ ] **Unit Tests** (`api/src/repositories/{entity}sRepo.test.ts`) - All CRUD operations, edge cases, errors
-- [ ] **Route Tests** (`api/src/routes/{entity}.test.ts`) - Integration tests for HTTP endpoints
+- [ ] **모델** (`api/src/models/{entity}.ts`) - TypeScript 인터페이스 + Swagger 스키마
+- [ ] **리포지토리** (`api/src/repositories/{entity}sRepo.ts`) - 모든 CRUD 메서드를 갖춘 데이터 접근
+- [ ] **라우트** (`api/src/routes/{entity}.ts`) - Express 핸들러 + Swagger 문서
+- [ ] **등록** (`api/src/index.ts`) - Express 앱에 라우트 추가
+- [ ] **마이그레이션** (`api/sql/migrations/{NNN}_{description}.sql`) - CREATE TABLE 문
+- [ ] **시드 데이터** (`api/sql/seed/{NNN}_{entity_names}.sql`) - 현실적인 예제 3-5개
+- [ ] **단위 테스트** (`api/src/repositories/{entity}sRepo.test.ts`) - 모든 CRUD 작업, 경계 사례, 오류
+- [ ] **라우트 테스트** (`api/src/routes/{entity}.test.ts`) - HTTP 엔드포인트 통합 테스트
 
-**Do not skip seed data or unit tests** - they are required for all new endpoints.
+**시드 데이터나 단위 테스트를 생략하지 마세요**. 모든 새 엔드포인트에 필수입니다.
 
-## Additional Resources
+## 추가 자료
 
-- See `references/testing-patterns.md` for comprehensive testing guidance
-- See `references/error-handling.md` for detailed error patterns
-- See `references/database-conventions.md` for SQLite specifics
-- See `references/swagger-patterns.md` for OpenAPI documentation
+- 포괄적인 테스트 지침은 `references/testing-patterns.md` 참고
+- 상세 오류 패턴은 `references/error-handling.md` 참고
+- SQLite 세부 사항은 `references/database-conventions.md` 참고
+- OpenAPI 문서는 `references/swagger-patterns.md` 참고

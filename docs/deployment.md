@@ -1,10 +1,13 @@
-# Azure Container Apps Deployment Plan for OctoCAT Supply Chain Management
+<a id="azure-container-apps-deployment-plan-for-octocat-supply-chain-management"></a>
+# OctoCAT 공급망 관리를 위한 Azure Container Apps 배포 계획
 
-This document outlines the deployment plan for the OctoCAT Supply Chain Management application to Azure Container Apps, focusing on cost-effectiveness and maintainability.
+이 문서는 비용 효율성과 유지 관리성을 중심으로 OctoCAT 공급망 관리 애플리케이션을 Azure Container Apps에 배포하는 계획을 설명합니다.
 
-## 1. Bicep Infrastructure Plan
+<a id="1-bicep-infrastructure-plan"></a>
+## 1. Bicep 인프라 계획
 
-### File Structure
+<a id="file-structure"></a>
+### 파일 구조
 ```
 infra/
 ├── main.bicep                 # Main orchestration file
@@ -16,72 +19,78 @@ infra/
 │   └── production.parameters.json # Production environment parameters
 ```
 
-#### Parameters must include:
+<a id="parameters-must-include"></a>
+#### 필수 parameter:
 - environmentName
 - appName
 - acrName
 - imageTag
 
-The ACR resource ID must be correctly calculated in the `main.bicep` file and passed to the `webapps.bicep` file along with the `acrName`, `imageTag` and other necessary variables. Make sure the location is defaulted to the resource group location for all resources.
+ACR resource ID는 `main.bicep` 파일에서 정확히 계산하여 `acrName`, `imageTag` 및 기타 필요한 변수와 함께 `webapps.bicep` 파일에 전달해야 합니다. 모든 resource의 기본 location이 resource group의 location이 되도록 하세요.
 
-#### Outputs
+<a id="outputs"></a>
+#### 출력
 
-Make sure you output the URL of both the API and Frotend in the `main.bicep` file so that it can be used as an output parameter for the environments in the Actions workflows.
+Actions workflow의 environment에서 출력 parameter로 사용할 수 있도록 `main.bicep` 파일에서 API와 frontend의 URL을 모두 출력하세요.
 
 #### Managed Identity
 
-Configure the Web Apps to use Managed Identity (SystemAssigned) to authenticate to the ACR via an `AcrPull` role assignment to the principalID. Set `acrUseManagedIdentityCreds: true` for the web apps.
+principalID에 `AcrPull` role을 할당하여 Managed Identity(SystemAssigned)로 ACR에 인증하도록 Web Apps를 설정합니다. Web Apps에 `acrUseManagedIdentityCreds: true`를 설정합니다.
 
-### Key Resources to Include
+<a id="key-resources-to-include"></a>
+### 포함할 주요 resource
 
 1. **Logging**
-   - Log Analytics integration for monitoring
+   - 모니터링을 위한 Log Analytics 통합
 
 2. **Container Registry**
-   - Use AZCR.io for container registry (the configuration script will create one)
-   - builds that push images must push to this Container Registry
+   - container registry로 AZCR.io 사용(설정 script가 생성)
+   - 이미지를 push하는 빌드는 반드시 이 Container Registry에 push
 
-3. **Two Azure Web Apps (Sites)**
-   - both running on B1 SKU
-   - API web app running API container
-   - Frontend web app running Frontend container
-      - Configured to point to ACR
-     - use respective API or Frontend image and tag
-     - ensure frontend URL is allowed in CORS for API
-   - Use `uniqueString()` to add a unique post-fix to the web app names
-   - ensure that API_HOST and API_PORT are correctly configured for the frontend deployment
-      - SQLite persistence for API: mount a writable volume for the DB file and set `DB_FILE` accordingly (e.g., `/home/site/data/app.db`)
+3. **Azure Web Apps(Sites) 두 개**
+   - 둘 다 B1 SKU에서 실행
+   - API container를 실행하는 API web app
+   - frontend container를 실행하는 frontend web app
+      - ACR을 가리키도록 설정
+     - 각각의 API 또는 frontend 이미지 및 tag 사용
+     - API의 CORS에서 frontend URL 허용 확인
+   - `uniqueString()`으로 web app 이름에 고유한 접미사 추가
+   - frontend 배포에 API_HOST와 API_PORT가 올바르게 설정되었는지 확인
+      - API의 SQLite persistence: DB 파일용 쓰기 가능한 volume을 mount하고 `DB_FILE`을 그에 맞게 설정(예: `/home/site/data/app.db`)
 
-4. **No role assignments**
-   - do not include ACR Pull role assignments - the Service Principal is already configured for this.
+4. **Role 할당 제외**
+   - ACR Pull role 할당을 포함하지 마세요. Service Principal에 이미 설정되어 있습니다.
 
-5. **Avoid circular assignments**
-   - be careful: the API needs frontend info and vice-versa, so ensure that you account for this and don't end up with circular logic!
+5. **순환 할당 방지**
+   - 주의: API에는 frontend 정보가 필요하고 그 반대도 마찬가지이므로, 이를 고려하여 순환 논리가 생기지 않게 하세요!
 
-## 2. Important Configuration Points & Gotchas
+<a id="2-important-configuration-points--gotchas"></a>
+## 2. 중요 설정 사항 및 주의점
 
-### CORS Configuration
-- Configure CORS in the API container app to allow requests from the Frontend container app
-- Use environment variables for dynamic CORS origins based on environment (make sure it starts with `https://`!)
+<a id="cors-configuration"></a>
+### CORS 설정
+- frontend container app의 요청을 허용하도록 API container app에 CORS 설정
+- environment별 동적 CORS origin에 환경 변수 사용(반드시 `https://`로 시작!)
 ```
 API_CORS_ORIGINS=https://${frontendAppFqdn},https://${stagingFrontendAppFqdn}
 ```
-- Ensure that the Web App for the frontend has these env vars:
+- frontend Web App에 다음 환경 변수가 있는지 확인:
 ```
 API_HOST=<host_of_API_web_app>
 API_PORT=80
 ```
-- Make sure that the `API_HOST` does NOT contain `https://` (it is the host, not the URL).
+- `API_HOST`에 `https://`가 포함되지 않도록 하세요(URL이 아니라 host입니다).
 
-### SQLite Persistence (API)
-- The API uses SQLite. Configure persistence in hosted environments:
-   - Set `DB_FILE` to a path under the Web App persistent storage (e.g., `/home/site/data/app.db` on Linux)
-   - Ensure the containing directory exists or is created on startup
-   - Optionally enable WAL with `DB_ENABLE_WAL=true` for better concurrency
-   - Foreign key enforcement is enabled by default; override with `DB_FOREIGN_KEYS=false` if needed
-- For containers (compose/k8s), mount a host or managed volume to persist the DB file
+<a id="sqlite-persistence-api"></a>
+### SQLite persistence(API)
+- API는 SQLite를 사용합니다. 호스팅 환경의 persistence를 설정하세요.
+   - `DB_FILE`을 Web App persistent storage 하위 경로로 설정(예: Linux의 `/home/site/data/app.db`)
+   - 상위 디렉터리가 존재하거나 시작 시 생성되는지 확인
+   - 더 나은 concurrency를 위해 선택적으로 `DB_ENABLE_WAL=true`로 WAL 활성화
+   - foreign key 강제 적용은 기본적으로 활성화되며, 필요하면 `DB_FOREIGN_KEYS=false`로 재정의
+- container(compose/k8s)에서는 DB 파일을 보존하도록 host 또는 managed volume mount
 
-Example env vars for API:
+API 환경 변수 예:
 ```
 DB_FILE=/home/site/data/app.db
 DB_ENABLE_WAL=true
@@ -89,85 +98,92 @@ DB_FOREIGN_KEYS=true
 DB_TIMEOUT=30000
 ```
 
-## 3. GitHub Actions Workflow Plan
+<a id="3-github-actions-workflow-plan"></a>
+## 3. GitHub Actions workflow 계획
 
-### Workflow Structure
+<a id="workflow-structure"></a>
+### Workflow 구조
 ```
 .github/workflows/
 ├── build-test.yml   # CI workflow for PRs
 ├── deploy.yml       # CD workflow for deploying to staging on PR and approval for PROD
 ```
 
-### CI Workflow (build-test.yml)
-- Triggered on push to any branch
-- Build both API and Frontend
-- Run unit tests
-- Lint code
-- Build Docker images but don't push them
+<a id="ci-workflow-build-testyml"></a>
+### CI workflow(build-test.yml)
+- 모든 branch의 push 시 trigger
+- API와 frontend 모두 빌드
+- unit test 실행
+- 코드 lint 검사
+- Docker 이미지를 빌드하되 push하지 않음
 
-### Deployment (deploy.yml)
-- Build
-  - Triggered on PR
-  - Build and run tests
-  - 2 jobs that run in parallel: one for API and one for Frontend
-     - Build and push Docker image to GHCR - use the short SHA of the commit to version the image
-- Staging Job
-  - requires both build jobs
-  - Deploy Bicep templates with staging parameters to Staging environment
-- Prod Job
-  - requires Staging job
-  - wait for approval (configured on Environment)
-  - Deploy Bicep templates with staging parameters to Prod environment
+<a id="deployment-deployyml"></a>
+### 배포(deploy.yml)
+- 빌드
+  - PR 시 trigger
+  - 빌드 및 테스트 실행
+  - API용과 frontend용 job 두 개를 병렬 실행
+     - Docker 이미지를 빌드하고 GHCR에 push하며, 이미지 버전에 commit의 short SHA 사용
+- Staging job
+  - 두 빌드 job 모두 필요
+  - staging parameter로 Bicep template을 Staging environment에 배포
+- Prod job
+  - Staging job 필요
+  - 승인 대기(Environment에서 설정)
+  - staging parameter로 Bicep template을 Prod environment에 배포
 
-## 4. Deployment Process
+<a id="4-deployment-process"></a>
+## 4. 배포 과정
 
-1. **Setup Prereqs**
-   - `az cli` (use `brew install az`) and then run `az login` to log in to your Azure subscription
-   - `gh cli` (use `brew install gh`) and then run `gh login` to log in to your GitHub account
+1. **사전 요구 사항 설정**
+   - `az cli`(`brew install az` 사용)를 설치한 다음 `az login`으로 Azure subscription에 로그인
+   - `gh cli`(`brew install gh` 사용)를 설치한 다음 `gh login`으로 GitHub 계정에 로그인
 
-2. **CI/CD Pipeline Configuration**
-   - Use OIDC for authentication from workflows:
-      - Run [this script](../infra/create-sp-oidc.sh) to create a service principal and configure OIDC for the repo.
-      - The script sets up:
-         - a Service Principal configured with OIDC
-         - Resource Groups for staging and prod
-         - An Azure Container Registry for hosting the images
-         - Actions Variables needed for workflows
-            - AZURE_CLIENT_ID: ID of the SP
-            - AZURE_TENANT_ID: ID of the tenant
-            - AZURE_SUBSCRIPTION_ID: ID of the subscription
-            - AZURE_RESOURCE_GROUP: Stating Resource Group
+2. **CI/CD pipeline 설정**
+   - workflow 인증에 OIDC 사용:
+      - [이 script](../infra/create-sp-oidc.sh)를 실행하여 service principal을 생성하고 repo의 OIDC를 설정합니다.
+      - script가 설정하는 항목:
+         - OIDC가 설정된 Service Principal
+         - staging 및 prod용 Resource Group
+         - 이미지를 호스팅하는 Azure Container Registry
+         - workflow에 필요한 Actions Variable
+            - AZURE_CLIENT_ID: SP의 ID
+            - AZURE_TENANT_ID: tenant의 ID
+            - AZURE_SUBSCRIPTION_ID: subscription의 ID
+            - AZURE_RESOURCE_GROUP: Staging Resource Group
             - AZURE_RESOURCE_GROUP_PROD: Prod Resource Group
-            - AZURE_ACR_NAME: Name of the AZCR
-         - 2 environments in the repo: Staging and Prod, with a manual approval on Prod
-         - use the step output of the deply step to update the frontend URL as the URL of the enviroment
+            - AZURE_ACR_NAME: AZCR의 이름
+         - repo에 Staging 및 Prod environment 두 개, Prod에는 수동 승인 설정
+         - deploy step의 출력을 사용하여 environment URL을 frontend URL로 업데이트
 
-3. **Deployment Strategy**
-   - for any push, execute the CI build
-   - for PRs and pushes to `main`:
-     - build and test the code
-     - create the docker images using the short SHA for the version tag
-     - use AZ login to get the credentials for the AZCR from the AZURE_ACR_NAME and AZURE_RESOURCE_GROUP_PROD vars
-     - push the images to the AZCR
-     - deploy to Staging first using the Staging environment
-     - wait for approval for Prod (configured on Prod environment)
-     - deploy to Prod using the Prod environment
-   - ensure that you use the following format for the environments so that the URL is populated in the workflow view:
+3. **배포 전략**
+   - 모든 push에 CI 빌드 실행
+   - PR 및 `main`에 대한 push:
+     - 코드 빌드 및 테스트
+     - version tag에 short SHA를 사용하여 Docker 이미지 생성
+     - AZ login으로 AZURE_ACR_NAME 및 AZURE_RESOURCE_GROUP_PROD 변수에서 AZCR 인증 정보 가져오기
+     - 이미지를 AZCR에 push
+     - Staging environment를 사용하여 먼저 Staging에 배포
+     - Prod 승인 대기(Prod environment에서 설정)
+     - Prod environment를 사용하여 Prod에 배포
+   - workflow 화면에 URL이 표시되도록 environment에 다음 형식 사용:
       ```yml
       environment:
         name: Staging|Production
         url: ${{ steps.deploy.outputs.frontendUrl }}
       ```
 
-### Backups and Recovery
-- Since SQLite is file-based, implement periodic backups of the DB file location
-- On Azure Web Apps, use WebJobs or scheduled workflows to copy `/home/site/data/app.db` to blob storage
-- For Docker, copy the volume or bind-mount target to backup storage
+<a id="backups-and-recovery"></a>
+### 백업 및 복구
+- SQLite는 파일 기반이므로 DB 파일 위치에 대한 정기 백업 구현
+- Azure Web Apps에서는 WebJobs 또는 예약된 workflow로 `/home/site/data/app.db`를 blob storage에 복사
+- Docker에서는 volume 또는 bind-mount 대상을 백업 storage에 복사
 
-## 3. IMPORTANT! Final Checks
-- Ensure that the bicep files don't have any unused declarations/varialbes
-- Ensure that the `main.bicep` file outputs the hostnames of the API and the frontend, and that these are used (via `${{ steps.<deploy>.ouputs}}) to set the URL for the environment (ensuring that `https://` is prepended)
-- Ensure that AcrPull role assignment is performed correctly for the Web Apps, and that both apps have `acrUseManagedIdentityCreds` is set to true
-- Ensure that the resources are using the location of the resource group
+<a id="3-important-final-checks"></a>
+## 3. 중요! 최종 확인
+- Bicep 파일에 사용하지 않는 선언이나 변수가 없는지 확인
+- `main.bicep` 파일이 API와 frontend의 hostname을 출력하고, 이를 `${{ steps.<deploy>.ouputs}}`로 사용하여 environment URL을 설정하는지 확인(`https://`를 앞에 붙여야 함)
+- Web Apps의 AcrPull role 할당이 올바르게 수행되고 두 앱 모두 `acrUseManagedIdentityCreds`가 true인지 확인
+- resource가 resource group의 location을 사용하는지 확인
 
-This plan provides a solid foundation for deploying the OctoCAT Supply Chain Management application to Azure Web Apps using infrastructure as code with Bicep and automated CI/CD with GitHub Actions.
+이 계획은 Bicep 기반 Infrastructure as Code와 GitHub Actions 기반 자동화 CI/CD로 OctoCAT 공급망 관리 애플리케이션을 Azure Web Apps에 배포하는 견고한 기반을 제공합니다.

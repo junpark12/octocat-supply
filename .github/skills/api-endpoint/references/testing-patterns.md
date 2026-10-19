@@ -1,20 +1,20 @@
-# Testing Patterns for API Endpoints
+# API 엔드포인트 테스트 패턴
 
-This document provides comprehensive guidance for writing unit tests and integration tests for API endpoints in the OctoCAT Supply Chain application.
+이 문서는 OctoCAT Supply Chain 애플리케이션의 API 엔드포인트에 대한 단위 테스트 및 통합 테스트 작성 지침을 제공합니다.
 
-## Overview
+## 개요
 
-**Always create unit tests** for new repositories in `api/src/repositories/{entity}sRepo.test.ts`.
+새 리포지토리에는 `api/src/repositories/{entity}sRepo.test.ts`에 **항상 단위 테스트를 만드세요**.
 
-All tests use Vitest as the testing framework with the following key libraries:
-- `vitest` - Test runner and assertion library
-- `supertest` - HTTP testing for route integration tests (optional)
+모든 테스트는 Vitest를 테스트 프레임워크로 사용하며 주요 라이브러리는 다음과 같습니다.
+- `vitest` - 테스트 실행기 및 검증 라이브러리
+- `supertest` - 라우트 통합 테스트용 HTTP 테스트(선택 사항)
 
-## Repository Unit Tests
+## 리포지토리 단위 테스트
 
-### Test File Structure
+### 테스트 파일 구조
 
-Create tests in `api/src/repositories/{entity}sRepo.test.ts`:
+`api/src/repositories/{entity}sRepo.test.ts`에 테스트를 만드세요.
 
 ```typescript
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -41,9 +41,9 @@ describe('EntityNamesRepository', () => {
 });
 ```
 
-### Required Test Coverage
+### 필수 테스트 커버리지
 
-Test all CRUD operations with the following scenarios:
+다음 시나리오로 모든 CRUD 작업을 테스트하세요.
 
 #### findAll()
 ```typescript
@@ -220,19 +220,19 @@ describe('exists', () => {
 });
 ```
 
-### Test Coverage Requirements
+### 테스트 커버리지 요구 사항
 
-Your repository tests must cover:
+리포지토리 테스트는 다음을 다뤄야 합니다.
 
-- ✅ **CRUD operations** - Test all create, read, update, delete methods
-- ✅ **Success cases** - Verify correct behavior with valid data
-- ✅ **Edge cases** - Empty results, null values, boundary conditions
-- ✅ **Error cases** - Database failures, not found scenarios, constraint violations
-- ✅ **Mock verification** - Ensure correct SQL queries and parameters are used
+- ✅ **CRUD 작업** - 모든 create, read, update, delete 메서드 테스트
+- ✅ **성공 사례** - 유효한 데이터로 올바른 동작 검증
+- ✅ **경계 사례** - 빈 결과, null 값, 경계 조건
+- ✅ **오류 사례** - 데이터베이스 실패, 찾을 수 없는 경우, 제약 조건 위반
+- ✅ **Mock 검증** - 올바른 SQL 쿼리 및 매개변수 사용 확인
 
-## Route Integration Tests (Optional)
+## 라우트 통합 테스트(선택 사항)
 
-Create integration tests in `api/src/routes/{entity}.test.ts` to test HTTP endpoints:
+HTTP 엔드포인트를 테스트하도록 `api/src/routes/{entity}.test.ts`에 통합 테스트를 만드세요.
 
 ```typescript
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -358,9 +358,9 @@ describe('EntityName Routes', () => {
 });
 ```
 
-## Running Tests
+## 테스트 실행
 
-### Command Line
+### 명령줄
 
 ```bash
 # Run all tests
@@ -379,47 +379,47 @@ npm test --workspace=api -- --watch
 npm test --workspace=api -- --grep "findAll"
 ```
 
-### Test Output
+### 테스트 출력
 
-Vitest provides clear, formatted output showing:
-- Pass/fail status for each test
-- Execution time
-- Coverage percentages (when using `--coverage`)
-- Detailed error messages and stack traces for failures
+Vitest는 다음을 보여 주는 명확하고 서식이 지정된 출력을 제공합니다.
+- 각 테스트의 통과/실패 상태
+- 실행 시간
+- 커버리지 백분율(`--coverage` 사용 시)
+- 실패에 대한 상세 오류 메시지 및 스택 추적
 
-## Best Practices
+## 모범 사례
 
 ### Mocking
-- Always mock database connections in unit tests
-- Use `vi.fn()` for mock functions
-- Clear mocks between tests with `vi.clearAllMocks()` in `beforeEach`
-- Mock at the boundary (database level for repositories, repository level for routes)
+- 단위 테스트에서는 항상 데이터베이스 연결을 mock 처리하세요.
+- mock 함수에는 `vi.fn()`을 사용하세요.
+- `beforeEach`에서 `vi.clearAllMocks()`로 테스트 사이의 mock을 초기화하세요.
+- 경계에서 mock 처리하세요(리포지토리는 데이터베이스 수준, 라우트는 리포지토리 수준).
 
-### Test Organization
-- Group related tests using nested `describe` blocks
-- One `describe` per method/function
-- Clear, descriptive test names using "should" statements
-- Arrange-Act-Assert pattern in each test
+### 테스트 구성
+- 중첩된 `describe` 블록으로 관련 테스트를 그룹화하세요.
+- 메서드/함수마다 `describe`를 하나씩 사용하세요.
+- "should" 문장을 사용하여 명확하고 설명적인 테스트 이름을 지정하세요.
+- 각 테스트에 Arrange-Act-Assert 패턴을 사용하세요.
 
-### Assertions
-- Verify both the result and the side effects (mock calls)
-- Check exact SQL queries and parameters when relevant
-- Test error types, not just that an error was thrown
-- Verify HTTP status codes and response bodies in route tests
+### 검증
+- 결과와 부수 효과(mock 호출)를 모두 검증하세요.
+- 관련이 있으면 정확한 SQL 쿼리와 매개변수를 확인하세요.
+- 오류 발생 여부뿐 아니라 오류 타입도 테스트하세요.
+- 라우트 테스트에서 HTTP 상태 코드와 응답 본문을 검증하세요.
 
-### Edge Cases to Test
-- Empty collections
-- Null/undefined values
-- Non-existent IDs (404 scenarios)
-- Constraint violations (unique, foreign key)
-- Database connection failures
-- Invalid input data types
+### 테스트할 경계 사례
+- 빈 컬렉션
+- Null/undefined 값
+- 존재하지 않는 ID(404 시나리오)
+- 제약 조건 위반(unique, foreign key)
+- 데이터베이스 연결 실패
+- 잘못된 입력 데이터 타입
 
-## Example: Complete Test File
+## 예제: 완전한 테스트 파일
 
-See `api/src/repositories/suppliersRepo.test.ts` for a complete, production-ready example following all patterns and best practices.
+모든 패턴과 모범 사례를 따르는 프로덕션 수준의 완전한 예제는 `api/src/repositories/suppliersRepo.test.ts`를 참고하세요.
 
-## Related Documentation
+## 관련 문서
 
-- See `error-handling.md` for testing error scenarios
-- See `database-conventions.md` for SQLite-specific testing considerations
+- 오류 시나리오 테스트는 `error-handling.md` 참고
+- SQLite 고유 테스트 고려 사항은 `database-conventions.md` 참고
