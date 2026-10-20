@@ -78,7 +78,7 @@ Agent가 구현을 완료하면 `make dev`로 애플리케이션을 실행하고
 
 **[선택 사항 - Copilot 지침 파일에 추가]**
 ```
-당신은 코드계의 Neil Armstrong입니다. Neil Armstrong처럼 말하고 설명에 우주 관련 문자를 사용해 주세요!
+당신은 코드계의 고양이입니다. 고양이 처럼 말하고 고양이 관련 이모지를 사용해 주세요.
 ```
 
 ---
@@ -98,6 +98,14 @@ Agent가 구현을 완료하면 `make dev`로 애플리케이션을 실행하고
 ```
 /model-selection Frontend 애플리케이션에 간단한 장바구니 아이콘과 장바구니 페이지를 추가하고 싶습니다. 아직 구현하지 마세요.
 ```
+
+> **설명:** `/model-selection`은 `.github/prompts/model-selection.prompt.md`를 호출하며, 뒤의 문장은 모델 추천에 사용할 자연어 입력입니다. Frontend는 사용자에게 보이는 웹 화면을 뜻합니다. 이 단계는 기능 구현이 아니라 적합한 모델을 추천받는 요청이며, 실제 모델 선택을 자동으로 변경하지 않습니다.
+
+**[출력 예시]**
+
+![model-selection 프롬프트의 모델별 비교 출력 예시](../images/model-selection-output-20261020.png)
+
+> 2026-10-20 실행 결과의 일부입니다. 모델별 장단점과 작업 적합성은 생성된 비교이며, 직접 측정한 벤치마크가 아닙니다. 이미지의 모델명·요율은 실행 당시 출력으로, 공식 가격 정책이나 성능·SLA 보장이 아닙니다. 실제 지원 모델과 과금은 최신 공식 문서에서 확인하며, 결과는 모델·환경에 따라 달라질 수 있습니다.
 
 ---
 
@@ -119,10 +127,47 @@ Agent가 구현을 완료하면 `make dev`로 애플리케이션을 실행하고
 
 #### Cloud Agent 세션
 
+**[사용 이유와 시나리오]** 요구사항과 완료 조건이 명확한 작업을 원격 환경에 맡기고, 개발자는 다른 작업을 진행한 뒤 PR로 결과를 검토할 때 사용합니다. 현재 로컬 코드와 도구를 보며 즉시 조정해야 하는 작업보다는, 저장소의 코드만으로 진행할 수 있는 독립적인 작업에 적합합니다.
+
+| 시나리오 | Cloud Agent를 사용하는 이유 |
+|---|---|
+| 범위가 작은 기능 추가 또는 버그 수정 | 요구사항·재현 방법·인수 조건을 전달하고 구현 결과를 PR로 검토할 수 있습니다. |
+| 테스트 보강·문서 개선·반복적인 코드 정리 | 별도로 진행하도록 맡겨 두고 개발자는 다른 업무를 이어갈 수 있습니다. |
+| 여러 독립 작업의 병렬 진행 | 로컬에서 진행 중인 편집과 분리해 작업을 맡기고, 각각의 결과를 검토한 뒤 통합할 수 있습니다. |
+| Issue에 정리된 작업 처리 | Issue의 요구사항을 바탕으로 구현·검증하고 PR의 변경 내용과 실행 기록을 검토하는 흐름으로 연결할 수 있습니다. |
+
+> **이번 실습의 의도:** 별점 리뷰 기능을 Cloud에 맡긴 동안 로컬에서는 장바구니 등 다른 데모를 진행하고, 이후 돌아와 PR을 확인합니다. Cloud라고 모든 작업이 자동으로 성공하거나 안전해지는 것은 아닙니다. 필요한 의존성·실행 환경·권한을 준비하고 결과를 검토해야 하며, 로컬 전용 파일·미커밋 변경·로컬에서 실행 중인 서비스는 자동으로 제공되지 않습니다.
+
+**[실행 위치 선택]** 새 채팅에서 첫 메시지를 보내기 전에 입력창 하단의 `Copilot` 메뉴를 열고 **`클라우드`**를 선택합니다. 대상 저장소가 `junpark12/octocat-supply`이고 원하는 원격 브랜치인지 확인한 뒤 아래 프롬프트를 실행합니다.
+
+![VS Code에서 Copilot 메뉴를 열어 클라우드 실행 대상을 선택하는 화면](../images/cloud-agent-session-target-20261020.png)
+
+> **설명:** 앞선 로컬 코드 작업과 달리, 이 단계는 원격 저장소의 코드를 기준으로 Cloud Agent가 작업하고 PR로 결과를 제공하는 세션입니다. 로컬의 미커밋 변경은 자동으로 포함되지 않습니다. 단순히 프롬프트에 “클라우드에서 실행해”라고 쓰는 것과 실제 실행 대상을 선택하는 것은 다릅니다. 캡처는 2026-10-20 기준 실행 대상 선택 메뉴이며, Cloud 세션 시작·완료 결과를 보여주는 화면은 아닙니다.
+
 **[프롬프트]** `[새 Cloud Agent 세션 생성]` 
 ```
 제품 페이지의 각 제품에 별점 리뷰 옵션을 추가해 주세요. 별 버튼은 눈에 띄고 클릭하기 쉽게 만들어 주세요. 버튼 색상은 반드시 빨간색으로 해 주세요! 기능을 테스트하고 쉽게 검토할 수 있도록 PR에 별점 리뷰 기능의 스크린샷을 포함해 주세요.
 ```
+
+**[실행 화면]**
+
+![Cloud Agent에 별점 리뷰 구현을 요청한 후 세션이 진행 중인 화면](../images/cloud-agent-session-progress-20261020.png)
+
+> **설명:** `Cloud`와 `Session is in progress...` 표시로 Cloud 세션이 진행 중임을 확인합니다. 이 화면만으로 구현·테스트 완료를 판단하지 말고, 이후 세션 결과와 생성된 PR을 확인합니다.
+
+**[GitHub 웹에서도 확인]** 대상 저장소의 **Agents → All sessions**에서 Cloud Agent 작업을 확인할 수 있습니다. 해당 세션을 열어 진행 상황과 실행 기록을 확인하고, 완료 후 연결된 PR을 검토합니다.
+
+![GitHub 저장소의 Agents 탭에서 별점 리뷰 작업이 Active 세션으로 표시된 화면](../images/cloud-agent-github-sessions-20261020.png)
+
+> **캡처 설명:** `Active 1`, `Completed 0`과 `Adding star rating review feature to product page` 작업이 표시됩니다. VS Code에서 요청한 작업을 GitHub 웹에서도 확인하는 예시이며, 아직 완료된 결과는 아닙니다.
+
+**[작업 결과와 PR]**
+
+![Cloud Agent의 작업 결과와 생성된 Draft PR #2 화면](../images/cloud-agent-draft-pr-result-20261020.png)
+
+> **설명:** Cloud Agent는 별도 작업 브랜치에 변경을 만들고 PR로 검토를 요청합니다. **Cloud 작업 → 작업 브랜치의 변경 → PR → 리뷰·Merge → 대상 브랜치 반영**의 흐름이며, PR 생성만으로 원격 `main`이나 현재 로컬 파일이 바뀌지는 않습니다. Merge 후 로컬 반영도 별도로 필요하며, 진행 중인 로컬 데모 변경을 먼저 보존해야 합니다.
+>
+> **이번 결과의 주의점:** 캡처에는 Draft PR #2와 빌드·린트 통과가 표시되지만, 브라우저 기능 테스트와 스크린샷 첨부는 미완료로 보고되어 있습니다. Agent의 완료 표시만으로 모든 요구사항이 충족됐다고 판단하지 말고, PR의 diff와 실제 검증 결과를 확인한 뒤 Merge 여부를 결정합니다.
 
 ---
 
@@ -138,6 +183,12 @@ Agent가 구현을 완료하면 `make dev`로 애플리케이션을 실행하고
 ### 사용자 지정 Agent 및 Subagent(Agent 오케스트레이션)
 
 **참고:** 사용자 지정 agent를 호출하기 전에 Agent Debug Log Panel [설정](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_agent-debug-log-panel)이 활성화되어 있는지 확인합니다. 이후 섹션에서 agent 로그를 검토합니다.
+
+**[로그 수집 활성화 — Copilot / Agent Host 세션]** `Ctrl + ,`로 설정을 열고 `@id:chat.agentHost.agentDebugLog.enabled`를 검색한 뒤 체크합니다.
+
+![VS Code 설정에서 Agent Host의 Agent Debug Log 수집을 활성화한 화면](../images/agent-debug-log-enabled-20261020.png)
+
+> **설명:** 위 캡처는 로그 수집 설정을 켠 화면입니다. 활성화한 뒤 사용자 지정 Agent를 실행하고, `Ctrl + Shift + P` → `Developer: Open Agent Debug Logs` 또는 Chat의 `…` → `Show Agent Debug Logs`에서 기록을 확인합니다. 활성화 이전 활동은 소급 수집되지 않습니다. Local harness는 별도 설정 `github.copilot.chat.agentDebugLog.fileLogging.enabled`를 사용하므로 실행 환경을 구분합니다. 로그에는 코드·프롬프트·경로 등이 포함될 수 있으므로 공유 전 확인합니다.
 
 **[프롬프트]** `[accessibility-report 사용자 지정 agent 사용]`
 ```
@@ -189,6 +240,12 @@ Navbar에 장바구니 아이콘이 있는 간단한 장바구니 페이지 구�
 주문 현황 파악과 추적을 개선할 API endpoint 추가 방안을 제안해 주세요
 ```
 
+**[Skill 사용 확인]**
+
+![Agent가 api-endpoint Skill을 읽고 API 추가 방안 분석을 안내하는 화면](../images/api-endpoint-skill-read-20261020.png)
+
+> **설명:** `Read skill api-endpoint` 표시로 Agent가 해당 Skill을 읽은 것을 확인합니다. 이 화면은 Skill 로딩을 보여주며, API 구현이나 검증까지 완료됐다는 뜻은 아닙니다.
+
 > **참고:** Agent의 제안에서 옵션 하나를 선택하여(order statistics를 대체) 구현합니다
 
 **[프롬프트]**
@@ -222,6 +279,18 @@ Agent Debug Log 패널은 agent 워크플로 문제 해결, 모델 선택 이해
 2) 기본적으로 패널에는 [Tree View](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_logs-view)가 표시됩니다. `Agent Debug Logs > Report Generation Request > Logs`의 트리 맨 위를 클릭하여 [Summary 보기](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_summary-view)로 전환합니다
 3) 사용자 지정 agent 및 subagent 호출이 표시된 해당 세션을 선택합니다
 4) Agent Flow Chart를 선택하여 도구 호출, 모델 선택, 사용자 메시지, agent 응답이 표시된 subagent 워크플로를 확인합니다
+
+**[Summary 확인 예시]**
+
+![Agent Debug Logs에서 선택한 세션의 요약과 실행 지표를 확인하는 화면](../images/agent-debug-log-summary-20261020.png)
+
+> **실습 중 관찰:** 현재 환경에서는 Chat의 실행 결과가 Debug Logs에 즉시 반영되지 않는 현상이 있었고, 이전 세션의 로그도 표시되었습니다. 패널에는 현재·과거 세션이 함께 나타날 수 있으므로 세션 이름·시각을 확인해 원하는 기록을 선택합니다. 이는 이번 환경에서의 관찰이며, 공식적으로 실시간 갱신을 지원하지 않는다는 뜻이나 일정한 지연 시간이 보장된다는 뜻은 아닙니다. 표시 지표가 0이라는 이유만으로 Agent가 실행되지 않았다고 판단하지 않습니다.
+
+**[Agent Flow Chart 예시]**
+
+![Agent Flow Chart에서 세션 시작, Hook, 사용자 메시지, 모델 요청과 도구 호출이 연결된 화면](../images/agent-debug-flow-chart-20261020.png)
+
+> **설명:** 선택한 세션의 Hook 이벤트, 사용자 메시지, 모델 요청과 도구 호출 흐름을 확인하는 예시입니다. 캡처에는 `rename_session`, `powershell` 호출과 성공 상태·소요 시간이 보입니다. 이 이미지 자체는 subagent 위임을 보여주는 증거는 아니며, subagent 실행을 확인하려면 해당 위임이 발생한 세션의 호출·하위 작업 노드를 확인해야 합니다. 로그·캡처를 공유하기 전 프롬프트·코드·경로 등 민감정보가 포함되어 있는지 검토합니다.
 
 ---
 
