@@ -1,30 +1,35 @@
-# Building and Testing the OctoCAT Supply Chain Application
+<a id="building-and-testing-the-octocat-supply-chain-application"></a>
+# OctoCAT 공급망 애플리케이션 빌드 및 테스트
 
-This guide provides instructions for building, running, and testing the OctoCAT Supply Chain Management application, which consists of an API component and a React Frontend.
+이 가이드는 API component와 React frontend로 구성된 OctoCAT 공급망 관리 애플리케이션의 빌드, 실행 및 테스트 방법을 안내합니다.
 
-## Prerequisites
+<a id="prerequisites"></a>
+## 사전 요구 사항
 
 
 
-- Node.js (version 18 or higher)
-- npm (latest version recommended)
+- Node.js (버전 18 이상)
+- npm (최신 버전 권장)
 
-- Docker/Podman (optional, for containerization)
+- Docker/Podman (선택 사항, container화용)
 
-## Installation
+<a id="installation"></a>
+## 설치
 
-1. Clone the repository
-2. Install dependencies:
+1. repository를 clone합니다.
+2. 의존성을 설치합니다.
 
 ```bash
 make install
 ```
 
-## Building the Application
+<a id="building-the-application"></a>
+## 애플리케이션 빌드
 
-### Using Make Commands
+<a id="using-make-commands"></a>
+### Make 명령어 사용
 
-You can build the entire application or its individual components using the following commands:
+다음 명령어로 전체 애플리케이션 또는 개별 component를 빌드할 수 있습니다.
 
 ```bash
 # Build both API and Frontend components
@@ -39,7 +44,7 @@ make build-frontend
 
 
 
-Alternatively, if you're in the `api/` or `frontend/` directories, you can use npm commands directly:
+또는 `api/`나 `frontend/` 디렉터리에서 npm 명령어를 직접 사용할 수 있습니다.
 
 ```bash
 cd api && npm run build
@@ -50,7 +55,8 @@ cd frontend && npm run build
 
 
 
-### Database management
+<a id="database-management"></a>
+### Database 관리
 
 ```bash
 # Initialize DB (migrations + seed)
@@ -65,7 +71,7 @@ make db-seed
 
 
 
-Alternatively, if you're in the `api/` directory, you can use npm commands directly:
+또는 `api/` 디렉터리에서 npm 명령어를 직접 사용할 수 있습니다.
 
 ```bash
 cd api
@@ -78,31 +84,34 @@ npm run db:seed
 
 
 
-Environment variables:
+환경 변수:
 
-- DB_FILE: path to SQLite database file (default: `api/data/app.db`)
-- DB_ENABLE_WAL: enable WAL mode (default: true)
-- DB_FOREIGN_KEYS: enforce foreign keys (default: true)
-- DB_TIMEOUT: busy timeout in ms (default: 30000)
+- DB_FILE: SQLite database 파일 경로 (기본값: `api/data/app.db`)
+- DB_ENABLE_WAL: WAL 모드 활성화 (기본값: true)
+- DB_FOREIGN_KEYS: foreign key 강제 적용 (기본값: true)
+- DB_TIMEOUT: 밀리초 단위 busy timeout (기본값: 30000)
 
-### Using VS Code Tasks
+<a id="using-vs-code-tasks"></a>
+### VS Code task 사용
 
-VS Code tasks have been configured to streamline the build process:
+빌드 과정을 간소화하도록 VS Code task가 설정되어 있습니다.
 
-1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) to open the Command Palette
-2. Type `Tasks: Run Task` and select it
-3. Choose from the following tasks:
-   - `Build All`: Builds both API and Frontend components
-   - `Build API`: Builds only the API component
-   - `Build Frontend`: Builds only the Frontend component
-
-
-Alternatively, you can press `Ctrl+Shift+B` (or `Cmd+Shift+B` on macOS) to run the default build task (`Build All`).
+1. `Ctrl+Shift+P`(macOS에서는 `Cmd+Shift+P`)를 눌러 Command Palette를 엽니다.
+2. `Tasks: Run Task`를 입력하고 선택합니다.
+3. 다음 task 중 하나를 선택합니다.
+   - `Build All`: API와 frontend component 모두 빌드
+   - `Build API`: API component만 빌드
+   - `Build Frontend`: frontend component만 빌드
 
 
-## Running the Application
+또는 `Ctrl+Shift+B`(macOS에서는 `Cmd+Shift+B`)를 눌러 기본 빌드 task(`Build All`)를 실행할 수 있습니다.
 
-### Using Make Commands
+
+<a id="running-the-application"></a>
+## 애플리케이션 실행
+
+<a id="using-make-commands-1"></a>
+### Make 명령어 사용
 
 ```bash
 # Start both API and Frontend in development mode with hot reloading
@@ -120,7 +129,7 @@ make start
 
 
 
-Alternatively, if you're in the `api/` or `frontend/` directories, you can use npm commands directly:
+또는 `api/`나 `frontend/` 디렉터리에서 npm 명령어를 직접 사용할 수 있습니다.
 
 ```bash
 cd api && npm run dev
@@ -131,17 +140,20 @@ cd frontend && npm run dev
 
 
 
-### Using VS Code Debugger
+<a id="using-vs-code-debugger"></a>
+### VS Code Debugger 사용
 
-1. Open the Debug panel (`Ctrl+Shift+D` or `Cmd+Shift+D` on macOS)
-2. Select `Start API & Frontend` from the dropdown menu
-3. Click the green play button or press F5
+1. Debug 패널을 엽니다(`Ctrl+Shift+D`, macOS에서는 `Cmd+Shift+D`).
+2. dropdown 메뉴에서 `Start API & Frontend`를 선택합니다.
+3. 초록색 재생 버튼을 클릭하거나 F5를 누릅니다.
 
-This will start both the API and Frontend in development mode with the integrated terminal, allowing you to see the console output.
+통합 terminal에서 API와 frontend가 모두 개발 모드로 시작되어 console 출력을 확인할 수 있습니다.
 
-## Testing the Application
+<a id="testing-the-application"></a>
+## 애플리케이션 테스트
 
-### Running Tests
+<a id="running-tests"></a>
+### 테스트 실행
 
 ```bash
 # Run all tests
@@ -156,7 +168,7 @@ make test-frontend
 
 
 
-Alternatively, if you're in the `api/` or `frontend/` directories, you can use npm commands directly:
+또는 `api/`나 `frontend/` 디렉터리에서 npm 명령어를 직접 사용할 수 있습니다.
 
 ```bash
 cd api && npm run test
@@ -167,7 +179,8 @@ cd frontend && npm run test
 
 
 
-### Linting
+<a id="linting"></a>
+### Lint 검사
 
 ```bash
 # Run linting checks
@@ -176,7 +189,7 @@ make lint
 
 
 
-Alternatively, if you're in the `api/` or `frontend/` directory, you can use npm commands directly:
+또는 `api/`나 `frontend/` 디렉터리에서 npm 명령어를 직접 사용할 수 있습니다.
 
 ```bash
 cd frontend && npm run lint
@@ -190,17 +203,20 @@ cd api && npm run lint
 
 
 
-## Additional Information
+<a id="additional-information"></a>
+## 추가 정보
 
-### Port Configuration
+<a id="port-configuration"></a>
+### Port 설정
 
-The API runs on port 3000 by default, and the Frontend runs on port 5137. When running in a Codespace environment, ensure that the API port visibility is set to `public` to avoid CORS errors when the Frontend tries to communicate with the API.
+API는 기본적으로 port 3000에서, frontend는 port 5137에서 실행됩니다. Codespace 환경에서는 frontend가 API와 통신할 때 CORS 오류가 발생하지 않도록 API port의 visibility를 `public`으로 설정하세요.
 
-For Docker, the sample compose maps API to 3000 and frontend to 3001.
+Docker의 샘플 compose는 API를 3000에, frontend를 3001에 매핑합니다.
 
-### Docker Deployment
+<a id="docker-deployment"></a>
+### Docker 배포
 
-The project includes Dockerfiles for both API and Frontend components and a docker-compose.yml file for easy containerized deployment:
+이 프로젝트에는 API와 frontend component의 Dockerfile 및 간편한 container 배포를 위한 docker-compose.yml 파일이 포함되어 있습니다.
 
 ```bash
 # Build and start using Docker Compose

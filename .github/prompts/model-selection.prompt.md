@@ -1,63 +1,63 @@
 ---
-description: 'Help choose the best Copilot model for a task, or generate a model comparison table.'
+description: '작업에 가장 적합한 Copilot 모델을 선택하도록 돕거나 모델 비교표를 생성합니다.'
 tools: ['web/fetch', 'search', 'edit']
 ---
 
-# GitHub Copilot Model Guide
+# GitHub Copilot 모델 가이드
 
-## References
+## 참고 자료
 
-- Fetch model information from <https://docs.github.com/en/copilot/using-github-copilot/ai-models/choosing-the-right-ai-model-for-your-task>.
-- Fetch the model comparison page from <https://docs.github.com/en/enterprise-cloud@latest/copilot/reference/ai-models/model-comparison>.
-- Fetch billing & pricing information from <https://docs.github.com/en/enterprise-cloud@latest/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests?versionId=enterprise-cloud%40latest>.
+- 모델 정보는 <https://docs.github.com/en/copilot/using-github-copilot/ai-models/choosing-the-right-ai-model-for-your-task>에서 가져오세요.
+- 모델 비교 페이지는 <https://docs.github.com/en/enterprise-cloud@latest/copilot/reference/ai-models/model-comparison>에서 가져오세요.
+- 청구 및 요금 정보는 <https://docs.github.com/en/enterprise-cloud@latest/copilot/managing-copilot/monitoring-usage-and-entitlements/about-premium-requests?versionId=enterprise-cloud%40latest>에서 가져오세요.
 
-## Constraints
+## 제약 조건
 
-- YOU MUST NOT modify application code
-- YOU MUST NOT suggest what code changes I need
-- YOU MUST ONLY help with model selection or generate comparison artifacts
-- YOU MUST NOT suggest using models directly, only through GitHub Copilot
+- 애플리케이션 코드를 절대로 수정하면 안 됩니다.
+- 필요한 코드 변경을 제안하면 안 됩니다.
+- 모델 선택을 돕거나 비교 자료를 생성하는 작업만 해야 합니다.
+- 모델의 직접 사용을 제안하면 안 되며 GitHub Copilot을 통한 사용만 제안해야 합니다.
 
-## Task 1: Model Selection Advice
+## 작업 1: 모델 선택 조언
 
-Help me choose the best Copilot model for my task.
+제 작업에 가장 적합한 Copilot 모델을 선택하도록 도와주세요.
 
-- This is for GitHub Copilot only — do not suggest using models directly
-- Consider the project architecture as defined by the [architecture doc](../../docs/architecture.md)
-- Ask clarifying questions when necessary
-- List ALL models from the docs (even the ones you don't recommend)
-- For each model summarize:
-  - Pros of using this model
-  - Cons of using this model
-  - Cost and performance considerations
-- At the end, be opinionated about 2 scenarios:
-  1. **Planning**: the best model to analyze current code and plan the changes
-  2. **Implementation**: the best model to implement the plan
-  - Show the most cost-effective option
-  - Show the most performant option (if cost is not a factor)
-  - Show the best balanced option
+- GitHub Copilot만을 위한 작업입니다. 모델의 직접 사용을 제안하지 마세요.
+- [아키텍처 문서](../../docs/architecture.md)에 정의된 프로젝트 아키텍처를 고려하세요.
+- 필요하면 명확히 하기 위한 질문을 하세요.
+- 문서의 모든 모델을 나열하세요(권장하지 않는 모델 포함).
+- 각 모델에 대해 다음을 요약하세요.
+  - 이 모델 사용의 장점
+  - 이 모델 사용의 단점
+  - 비용 및 성능 고려 사항
+- 마지막으로 두 시나리오에 대한 명확한 견해를 제시하세요.
+  1. **계획**: 현재 코드를 분석하고 변경을 계획하기에 가장 적합한 모델
+  2. **구현**: 계획을 구현하기에 가장 적합한 모델
+  - 가장 비용 효율적인 선택 제시
+  - 비용을 고려하지 않을 때 성능이 가장 좋은 선택 제시
+  - 가장 균형 잡힌 선택 제시
 
-## Task 2: Generate Comparison Tables per Use Case
+## 작업 2: 사용 사례별 비교표 생성
 
-When asked to generate or update a comparison file, create (or update) `model-comparison.md` with the following:
+비교 파일의 생성 또는 업데이트를 요청받으면 다음 내용을 포함하여 `model-comparison.md`를 만들거나 업데이트하세요.
 
-- Create one section per model use-case listed on the very top of the GitHub Documentation page (balance between performance and cost, fast low-cost support for basic tasks, deep reasoning and multimodal inputs).
-- Add missing models to the sections where they make the most sense.
-- Add models to only ONE section where they make the most sense. Don't duplicate them across sections.
-- In each section, list the high-level pros (e.g., speed, deep reasoning, etc.) concisely.
-- Below, generate a table for that use case with the following columns/information:
-  - The primary use case and differentiator for each model (e.g., "generate documentation", "common development", "complex architecture questions").
-  - Whether the model is in GA (use ✅ for GA and 🚧 for Preview). Preview is indicated by a header in the detail section of that model.
-  - Special abilities (e.g., "👓 visual support").
-  - The multipliers for that model from the billing docs.
-- List each model only in the section where it fits best.
-- Use emojis both for and within the tables to highlight differences (e.g., "💰" for expensive models, "🚀" for fast models).
-- Be concise in the pros & cons; use single words or very short phrases.
+- GitHub 문서 페이지 최상단에 나열된 모델 사용 사례별로 섹션을 하나씩 만드세요(성능과 비용의 균형, 기본 작업을 위한 빠른 저비용 지원, 심층 추론 및 멀티모달 입력).
+- 누락된 모델을 가장 적절한 섹션에 추가하세요.
+- 각 모델을 가장 적절한 단 하나의 섹션에만 추가하고 여러 섹션에 중복하지 마세요.
+- 각 섹션에 주요 장점(예: 속도, 심층 추론 등)을 간결하게 나열하세요.
+- 아래에 해당 사용 사례의 표를 다음 열/정보로 생성하세요.
+  - 각 모델의 주요 사용 사례 및 차별점(예: "문서 생성", "일반 개발", "복잡한 아키텍처 질문").
+  - 모델의 GA 여부(GA는 ✅, Preview는 🚧 사용). Preview는 해당 모델 상세 섹션의 제목에 표시됩니다.
+  - 특수 기능(예: "👓 시각 지원").
+  - 청구 문서에 명시된 해당 모델의 배수.
+- 각 모델은 가장 적합한 섹션에만 나열하세요.
+- 표와 표 내부에 이모지를 사용하여 차이를 강조하세요(예: 비싼 모델은 "💰", 빠른 모델은 "🚀").
+- 장단점은 단어나 매우 짧은 문구로 간결하게 작성하세요.
 
-## Task 3: Generate a Model Summary Overview
+## 작업 3: 모델 요약 개요 생성
 
-Once prompted for the summary overview, draw a mermaid diagram that lists the different models on a "performance" vs. "quality & cost" line, where left is more performant and right is higher quality.
+요약 개요를 요청받으면 "성능" 대 "품질 및 비용" 축에 여러 모델을 나열하는 mermaid 다이어그램을 그리세요. 왼쪽은 더 높은 성능, 오른쪽은 더 높은 품질을 나타냅니다.
 
-- Draw from left to right.
-- Use high-contrast colors for text to ensure readability.
-- Use <br/> for line breaks inside the boxes for the models, as \n does not work.
+- 왼쪽에서 오른쪽으로 그리세요.
+- 가독성을 위해 텍스트에 대비가 높은 색상을 사용하세요.
+- \n은 작동하지 않으므로 모델 상자 안의 줄바꿈에는 <br/>를 사용하세요.

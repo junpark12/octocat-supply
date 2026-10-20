@@ -1,79 +1,79 @@
 ---
-description: 'Use Coding Agent to test multiple paths - in parallel!'
+description: 'Coding Agent로 여러 접근 방식을 병렬로 테스트하세요!'
 tools: ['search', 'edit', 'web','vscode/openSimpleBrowser', 'read', 'execute', 'azure-mcp-server/search', 'playwright/*', 'github/*']
 ---
 
-# Demo: Use Coding Agent to test multiple paths - in parallel!
+# 데모: Coding Agent로 여러 접근 방식을 병렬로 테스트하세요!
 
-## Context
-This is a demo for GitHub Copilot Coding Agent. Experimentation can be hard, expensive and take a long time. This demo shows how to use the Coding Agent to test multiple paths in parallel, allowing you to explore different solutions and approaches quickly.
+## 배경
+GitHub Copilot Coding Agent 데모입니다. 실험은 어렵고 비용이 많이 들며 오래 걸릴 수 있습니다. 이 데모에서는 Coding Agent를 사용해 여러 접근 방식을 병렬로 테스트하여 다양한 해결책과 접근법을 빠르게 탐색하는 방법을 보여 줍니다.
 
-## Current State
-- The application has a Products page where users can view items
-- Users can click "Add to Cart" but nothing actually happens except showing a message
-- There is NO cart functionality implemented yet
-- The NavBar does not have a Cart icon
+## 현재 상태
+- 사용자가 상품을 볼 수 있는 Products 페이지가 있습니다.
+- "Add to Cart"를 클릭해도 메시지만 표시되고 실제 동작은 없습니다.
+- 장바구니 기능은 아직 전혀 구현되지 않았습니다.
+- NavBar에 Cart 아이콘이 없습니다.
 
-## Demo Goal
-Implement a complete Cart system including:
-1. A Cart icon in the NavBar that shows the number of items
-2. A dedicated Cart page with full functionality
-3. Cart state management across the application
-4. Free shipping for orders over $100, otherwise $25 shipping fee
-5. Add/remove items functionality
-6. Remove the alert message when adding items to the cart
+## 데모 목표
+다음을 포함한 완전한 장바구니 시스템을 구현하세요.
+1. 상품 수를 표시하는 NavBar의 Cart 아이콘
+2. 모든 기능을 갖춘 전용 Cart 페이지
+3. 애플리케이션 전반의 장바구니 상태 관리
+4. $100 초과 주문은 무료 배송, 그 외에는 배송비 $25
+5. 상품 추가/제거 기능
+6. 장바구니에 상품을 추가할 때 표시되는 알림 메시지 제거
 
-## Instructions
-1. First analyze the repo and use the instructions/context below to create a high-level plan for the implementation.
-2. Create 3 different VISUAL design approaches for the Cart Page and Cart Icon: all of them must use local browser state management, but they can differ in how the Cart Icon is implemented, and how the Cart Page is structured. Do not modify other pages other than the Cart Page and Cart Icon.
-3. Summarize the designs in a sentence or two each.
-4. Create an Epic issue in the GitHub repository called "Cart Page Experimentation".
-5. For each design, create a separate sub-issue in the Epic issue.
-6. Assign the Copilot Agent to each sub-issue to implement the design in parallel.
+## 지침
+1. 먼저 리포지토리를 분석하고 아래 지침/배경을 사용하여 구현을 위한 상위 수준 계획을 만드세요.
+2. Cart Page 및 Cart Icon에 대해 시각적으로 서로 다른 디자인 접근법 3개를 만드세요. 모두 로컬 브라우저 상태 관리를 사용해야 하지만 Cart Icon 구현 및 Cart Page 구조는 달라도 됩니다. Cart Page 및 Cart Icon 외의 다른 페이지는 수정하지 마세요.
+3. 각 디자인을 한두 문장으로 요약하세요.
+4. GitHub 리포지토리에 "Cart Page Experimentation"이라는 Epic 이슈를 만드세요.
+5. 각 디자인에 대해 Epic 이슈의 별도 하위 이슈를 만드세요.
+6. 각 하위 이슈에 Copilot Agent를 할당하여 디자인을 병렬로 구현하세요.
 
-### Frontend Architecture and Building
-- Refer to the existing Architecture Doc (../docs/architecture.md) for frontend structure
-- Refere to the Building Doc (../docs/building.md) for build instructions
+### 프런트엔드 아키텍처 및 빌드
+- 프런트엔드 구조는 기존 아키텍처 문서(../docs/architecture.md)를 참고하세요.
+- 빌드 지침은 빌드 문서(../docs/building.md)를 참고하세요.
 
-### Implementation Specifications
-1. **Cart Context**: Create a CartContext to manage cart state globally
-2. **Cart Icon**: Add to Navigation component with item count badge
-3. **Cart Hook**: Custom hook for cart operations
-4. **Integration**: Connect with existing Product pages
+### 구현 명세
+1. **Cart Context**: 장바구니 상태를 전역으로 관리하는 CartContext 생성
+2. **Cart 아이콘**: 상품 수 배지와 함께 Navigation 컴포넌트에 추가
+3. **Cart Hook**: 장바구니 작업용 Custom Hook
+4. **통합**: 기존 Product 페이지와 연결
 
-### Key Features to Implement
-- Add items to cart from product pages
-- View all cart items on dedicated cart page
-- Update item quantities
-- Remove items from cart
-- Calculate subtotals and totals
-- Calculate shipping costs based on total price
-- Persist cart state (localStorage)
-- Responsive design matching existing app style
+### 구현할 주요 기능
+- 상품 페이지에서 장바구니에 상품 추가
+- 전용 장바구니 페이지에서 모든 장바구니 상품 조회
+- 상품 수량 업데이트
+- 장바구니에서 상품 제거
+- 소계 및 합계 계산
+- 총액에 따른 배송비 계산
+- 장바구니 상태 영속화(localStorage)
+- 기존 앱 스타일에 맞는 반응형 디자인
 
-## Success Criteria
-After implementation, users should be able to:
-1. See a cart icon in the navigation with item count
-2. Add products to cart from the Products page
-3. Navigate to cart page by clicking the cart icon
-4. View all items in their cart
-5. Modify quantities of cart items
-6. See shipping costs applied based on total price
-7. Remove items from cart
-8. See accurate total calculations
+## 성공 기준
+구현 후 사용자가 다음을 할 수 있어야 합니다.
+1. 내비게이션에서 상품 수가 표시된 장바구니 아이콘 확인
+2. Products 페이지에서 장바구니에 상품 추가
+3. 장바구니 아이콘을 클릭하여 장바구니 페이지로 이동
+4. 장바구니의 모든 상품 조회
+5. 장바구니 상품 수량 변경
+6. 총액에 따라 적용된 배송비 확인
+7. 장바구니에서 상품 제거
+8. 정확한 합계 계산 확인
 
-## Implementation Instructions
-1. Analyze the existing codebase structure
-2. Create cart state management (Context + Hook)
-3. Add cart icon to Navigation component
-4. Create Cart page component
-5. Integrate cart functionality with existing Product components
-6. Style components to match existing design system
-7. Test the complete cart workflow
+## 구현 지침
+1. 기존 코드베이스 구조 분석
+2. 장바구니 상태 관리 생성(Context + Hook)
+3. Navigation 컴포넌트에 장바구니 아이콘 추가
+4. Cart 페이지 컴포넌트 생성
+5. 기존 Product 컴포넌트와 장바구니 기능 통합
+6. 기존 디자인 시스템에 맞게 컴포넌트 스타일 지정
+7. 전체 장바구니 워크플로 테스트
 
-## Notes
-- Follow existing code patterns and styling conventions
-- Maintain consistency with current navigation and routing
-- Ensure responsive design
-- Ensure styling works for both Dark and Light modes
-- Handle edge cases (empty cart, etc.)
+## 참고 사항
+- 기존 코드 패턴 및 스타일 규칙을 따르세요.
+- 현재 내비게이션 및 라우팅과 일관성을 유지하세요.
+- 반응형 디자인을 보장하세요.
+- Dark 및 Light 모드 모두에서 스타일이 작동하도록 하세요.
+- 빈 장바구니 등의 경계 사례를 처리하세요.

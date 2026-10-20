@@ -1,21 +1,21 @@
-# **About Up the Demo**
+# **데모 소개**
 
-- **About the App:** This is a modern TypeScript web-app with separate API and Frontend (React) projects that you will enhance with Copilot Agent Mode, Vision, MCP Servers and GHAS/Actions.
-- **Why:** Demonstrate how Copilot can analyze and enhance existing code automatically, understand images, vulnerabilities and testing and how you can extend Copilot's capabilities with MCP server.
-- **Demos**: You don't have to do all these demos, or do them in order. Get comfortable with the scenarios and practice them and then mix/match according to your audience.
-- **MCP Servers**: The GitHub MCP server runs via Docker. You will need to install Docker locally to run it (it should work fine in a Codespace automatically). I use Podman for my Mac. Install this _before_ you attempt this demo! You'll also need a PAT that has enough permissions for your demos. Details below.
-- **Padawan**: If you want to use Padawan, you have to ensure that it is enabled on the repo, that Actions are enabled and that you have a branch protection rule for `main`. I recommend creating a PR required for changes to Default branch with 1 required reviewer.
-- **Local vs Codespaces:**  
-  - This demo can work in a Codespace - but some scenarios (like running Playwright tests) require that you work in a local VSCode (clone the repo locally)
-  - The API endpoint is automatically detected for both browser-based and local VS Code Codespaces. The API port (3000) is configured as `public` in the devcontainer and enforced in a post setup command for browser access, and the frontend dynamically constructs the correct endpoint URL.
-  - Although the API port (3000) is set to `public` automatically, it's recommended to verify the port visibility in Codespace before the demo to avoid unexpected CORS errors.
-  - Make sure you **PRACTICE** this demo _before_ trying it in front of customers
-  - Remember, Copilot is non-deterministic so you can't always predict exact behavior. Make sure you are comfortable with this environment so you can pivot quicky!
-  - You don't have to use **VS Code Insiders** Version unless you want to demo features that you know are in preview.
-    - If you want to access the Insiders Version in the web-version of a Codespace, click on the gear-icon on the bottom-left and select `Switch to Insiders Version...`
+- **앱 소개:** API와 Frontend(React) 프로젝트가 분리된 최신 TypeScript 웹 앱입니다. Copilot Agent Mode, Vision, MCP 서버, GHAS/Actions로 이 앱을 개선합니다.
+- **이유:** Copilot이 기존 코드를 자동으로 분석하고 개선하며 이미지, 취약점, 테스트를 이해하는 방식과 MCP 서버로 Copilot의 기능을 확장하는 방법을 보여 줍니다.
+- **데모**: 모든 데모를 진행하거나 순서대로 진행할 필요는 없습니다. 시나리오에 익숙해지도록 연습한 후 청중에 맞게 조합하세요.
+- **MCP 서버**: GitHub MCP 서버는 Docker로 실행됩니다. 실행하려면 로컬에 Docker를 설치해야 합니다(Codespace에서는 자동으로 잘 작동할 것입니다). 저는 Mac에서 Podman을 사용합니다. 데모를 시도하기 _전에_ 설치하세요! 데모에 충분한 권한이 있는 PAT도 필요합니다. 자세한 내용은 아래에 있습니다.
+- **Padawan**: Padawan을 사용하려면 저장소에서 Padawan과 Actions가 활성화되어 있고 `main`에 대한 브랜치 보호 규칙이 있는지 확인해야 합니다. Default 브랜치 변경에 PR을 요구하고 필수 검토자 1명을 지정하는 것을 권장합니다.
+- **로컬과 Codespaces 비교:**  
+  - 이 데모는 Codespace에서 진행할 수 있지만 일부 시나리오(예: Playwright 테스트 실행)는 로컬 VSCode에서 작업해야 합니다(저장소를 로컬로 clone)
+  - 브라우저 기반 및 로컬 VS Code Codespaces 모두에서 API endpoint가 자동 감지됩니다. API 포트(3000)는 devcontainer에서 `public`으로 구성되며 브라우저 접근을 위해 설치 후 명령으로 강제 적용됩니다. Frontend는 올바른 endpoint URL을 동적으로 구성합니다.
+  - API 포트(3000)가 자동으로 `public`으로 설정되지만 예상치 못한 CORS 오류를 피하려면 데모 전에 Codespace에서 포트 공개 여부를 확인하는 것이 좋습니다.
+  - 고객 앞에서 진행하기 _전에_ 반드시 이 데모를 **연습**하세요
+  - Copilot은 비결정적이므로 정확한 동작을 항상 예측할 수는 없습니다. 빠르게 대응할 수 있도록 환경에 익숙해지세요!
+  - Preview 기능을 시연하려는 경우가 아니라면 **VS Code Insiders** 버전을 사용할 필요는 없습니다.
+    - 웹 버전 Codespace에서 Insiders 버전에 접근하려면 왼쪽 아래 톱니바퀴 아이콘을 클릭하고 `Switch to Insiders Version...`을 선택합니다
 
-  ![Switch to Insiders](../images/vscode-switch-to-insiders.png)
+  ![Insiders로 전환](../images/vscode-switch-to-insiders.png)
 
-## **Building, Running and Debugging the code**
+## **코드 빌드, 실행 및 디버깅**
 
-Refer to [the build docs](../../docs/build.md).
+[빌드 문서](../../docs/build.md)를 참조하세요.

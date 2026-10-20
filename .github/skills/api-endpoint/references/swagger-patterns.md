@@ -1,17 +1,17 @@
-# Swagger/OpenAPI Documentation Patterns
+# Swagger/OpenAPI 문서 패턴
 
-This document details how to write Swagger documentation for API endpoints in the OctoCAT Supply Chain application.
+이 문서는 OctoCAT Supply Chain 애플리케이션의 API 엔드포인트용 Swagger 문서 작성 방법을 설명합니다.
 
-## Overview
+## 개요
 
-The API uses JSDoc-style `@swagger` comments that are parsed by `swagger-jsdoc` to generate OpenAPI 3.0 documentation. Documentation is defined in two places:
+API는 JSDoc 스타일의 `@swagger` 주석을 사용하며 `swagger-jsdoc`가 이를 파싱하여 OpenAPI 3.0 문서를 생성합니다. 문서는 두 곳에 정의됩니다.
 
-1. **Model files** - Schema definitions (`components/schemas`)
-2. **Route files** - Endpoint documentation (`paths`)
+1. **모델 파일** - 스키마 정의(`components/schemas`)
+2. **라우트 파일** - 엔드포인트 문서(`paths`)
 
-## Schema Documentation (Models)
+## 스키마 문서(모델)
 
-Define schemas in model files above the TypeScript interface:
+모델 파일의 TypeScript 인터페이스 위에 스키마를 정의하세요.
 
 ```typescript
 // api/src/models/supplier.ts
@@ -52,21 +52,21 @@ export interface Supplier {
 }
 ```
 
-### Property Types
+### 속성 타입
 
-| TypeScript | OpenAPI Type | Format |
+| TypeScript | OpenAPI 타입 | 형식 |
 |------------|--------------|--------|
 | `number` | `integer` | - |
-| `number` (decimal) | `number` | `float` or `double` |
+| `number` (소수) | `number` | `float` 또는 `double` |
 | `string` | `string` | - |
-| `string` (email) | `string` | `email` |
-| `string` (date) | `string` | `date-time` |
+| `string` (이메일) | `string` | `email` |
+| `string` (날짜) | `string` | `date-time` |
 | `boolean` | `boolean` | - |
 | `string[]` | `array` | items: { type: string } |
 
-### Required vs Optional
+### 필수와 선택
 
-Mark required fields in the `required` array:
+필수 필드를 `required` 배열에 표시하세요.
 
 ```yaml
 required:
@@ -81,11 +81,11 @@ properties:
     type: string
 ```
 
-## Endpoint Documentation (Routes)
+## 엔드포인트 문서(라우트)
 
-### Tags
+### 태그
 
-Group related endpoints with a tag defined at the top of the route file:
+라우트 파일 상단에 정의한 태그로 관련 엔드포인트를 그룹화하세요.
 
 ```typescript
 /**
@@ -96,7 +96,7 @@ Group related endpoints with a tag defined at the top of the route file:
  */
 ```
 
-### GET All (List)
+### GET 전체 조회(목록)
 
 ```typescript
 /**
@@ -117,7 +117,7 @@ Group related endpoints with a tag defined at the top of the route file:
  */
 ```
 
-### GET One (By ID)
+### GET 단일 조회(ID 기준)
 
 ```typescript
 /**
@@ -145,7 +145,7 @@ Group related endpoints with a tag defined at the top of the route file:
  */
 ```
 
-### POST (Create)
+### POST(생성)
 
 ```typescript
 /**
@@ -170,7 +170,7 @@ Group related endpoints with a tag defined at the top of the route file:
  */
 ```
 
-### PUT (Update)
+### PUT(업데이트)
 
 ```typescript
 /**
@@ -228,9 +228,9 @@ Group related endpoints with a tag defined at the top of the route file:
  */
 ```
 
-## Query Parameters
+## 쿼리 매개변수
 
-For filtering or pagination:
+필터링 또는 페이지네이션:
 
 ```typescript
 /**
@@ -263,9 +263,9 @@ For filtering or pagination:
  */
 ```
 
-## Custom Response Objects
+## 사용자 지정 응답 객체
 
-For endpoints returning non-standard data:
+비표준 데이터를 반환하는 엔드포인트:
 
 ```typescript
 /**
@@ -296,9 +296,9 @@ For endpoints returning non-standard data:
  */
 ```
 
-## Error Responses
+## 오류 응답
 
-Standard error response format:
+표준 오류 응답 형식:
 
 ```typescript
 /**
@@ -320,7 +320,7 @@ Standard error response format:
  */
 ```
 
-Reference in responses:
+응답에서 참조:
 
 ```yaml
 responses:
@@ -332,9 +332,9 @@ responses:
           $ref: '#/components/schemas/Error'
 ```
 
-## Multiple Operations on Same Path
+## 동일 경로의 여러 작업
 
-Document multiple HTTP methods under the same path block:
+동일한 경로 블록 아래에 여러 HTTP 메서드를 문서화하세요.
 
 ```typescript
 /**
@@ -355,16 +355,16 @@ Document multiple HTTP methods under the same path block:
  */
 ```
 
-## Accessing Swagger UI
+## Swagger UI 접근
 
-The generated documentation is available at:
+생성된 문서는 다음 위치에서 확인할 수 있습니다.
 - **Swagger UI**: `http://localhost:3000/api-docs`
-- **JSON spec**: `http://localhost:3000/api-docs.json`
+- **JSON 명세**: `http://localhost:3000/api-docs.json`
 
-## Best Practices
+## 모범 사례
 
-1. **Write summaries first** - Brief, action-oriented (e.g., "Create a new supplier")
-2. **Use schema references** - `$ref: '#/components/schemas/...'` for consistency
-3. **Document all responses** - Include 200/201, 400, 404, 500 as appropriate
-4. **Parameter descriptions** - Always describe what the parameter represents
-5. **Keep schemas in models** - Don't duplicate schema definitions in route files
+1. **요약 먼저 작성** - 간결하고 동작 중심으로 작성(예: "새 공급업체 생성")
+2. **스키마 참조 사용** - 일관성을 위해 `$ref: '#/components/schemas/...'` 사용
+3. **모든 응답 문서화** - 적절한 경우 200/201, 400, 404, 500 포함
+4. **매개변수 설명** - 매개변수가 나타내는 내용을 항상 설명
+5. **스키마는 모델에 유지** - 라우트 파일에 스키마 정의를 중복하지 않기

@@ -1,50 +1,50 @@
-# OctoCAT Supply Chain Management Application – General Copilot Instructions
+# OctoCAT Supply Chain Management Application – 일반 Copilot 지침
 
-These are repository-wide guidelines. Path‑scoped files in `.github/instructions/*.instructions.md` provide focused guidance for specific areas (frontend, API, database).
+리포지토리 전체에 적용되는 지침입니다. `.github/instructions/*.instructions.md`의 경로별 파일은 특정 영역(프런트엔드, API, 데이터베이스)에 대한 집중 지침을 제공합니다.
 
-## High-Level Architecture
+## 상위 수준 아키텍처
 
-TypeScript monorepo with:
-- `api/` Express REST API (SQLite persistence, repository pattern, Swagger docs)
+다음으로 구성된 TypeScript monorepo:
+- `api/` Express REST API(SQLite 영속성, repository 패턴, Swagger 문서)
 
 - `frontend/` React + Vite + Tailwind UI
-- Shared demo + infra docs under `docs/` and deployment scripts under `infra/`
+- 공통 데모 및 인프라 문서는 `docs/`, 배포 스크립트는 `infra/`에 있습니다.
 
-Refer to `docs/architecture.md` and `docs/sqlite-integration.md` for deeper details. Avoid restating them in reviews and link instead.
+자세한 내용은 `docs/architecture.md`와 `docs/sqlite-integration.md`를 참고하세요. 검토에서 내용을 반복하지 말고 링크를 제공하세요.
 
-## General Review Guidance
-When generating suggestions:
-1. Prefer incremental, minimal diffs; preserve existing style and naming.
-2. Surface security, correctness, and data integrity issues before micro-optimizations.
+## 일반 검토 지침
+제안을 작성할 때:
+1. 점진적이고 최소한의 diff를 우선하고 기존 스타일과 이름을 유지하세요.
+2. 미세 최적화보다 보안, 정확성 및 데이터 무결성 문제를 먼저 제시하세요.
 
-3. Encourage type safety (no `any` unless justified). Suggest adding/refining model or DTO types when gaps appear.
+3. 타입 안전성을 권장하세요(정당한 이유 없이 `any` 사용 금지). 부족한 부분이 있으면 모델 또는 DTO 타입의 추가/개선을 제안하세요.
 
-4. Flag duplicate logic that belongs in a shared utility or repository method.
-5. Ensure error handling uses existing custom error types where appropriate (e.g., NotFound, Validation, Conflict) and propagates consistent HTTP status codes via middleware.
-6. Encourage tests: request unit tests for new repository logic and component tests (or at least React Testing Library coverage) for critical UI paths.
-7. For performance concerns, highlight N+1 query patterns, unnecessary data loading, or large bundle additions.
-8. Prefer environment variable driven configuration; avoid hard‑coded paths/secrets.
+4. 공통 유틸리티나 리포지토리 메서드에 있어야 할 중복 로직을 지적하세요.
+5. 적절한 곳에 기존 사용자 지정 오류 타입(예: NotFound, Validation, Conflict)을 사용하고 미들웨어를 통해 일관된 HTTP 상태 코드를 전파하도록 하세요.
+6. 테스트를 권장하세요. 새 리포지토리 로직에 단위 테스트를, 중요한 UI 경로에 컴포넌트 테스트(또는 최소한 React Testing Library 커버리지)를 요청하세요.
+7. 성능 문제로는 N+1 쿼리 패턴, 불필요한 데이터 로딩 또는 큰 번들 추가를 강조하세요.
+8. 환경 변수 기반 설정을 우선하고 경로/비밀 값을 하드코딩하지 마세요.
 
-## Monorepo Workflow
+## Monorepo 워크플로
 
-- Build frequently: `npm run build --workspace=api` or `--workspace=frontend` (root build runs both)
+- 자주 빌드하세요: `npm run build --workspace=api` 또는 `--workspace=frontend`(루트 빌드는 둘 다 실행)
 
-- Keep PRs scoped: code + tests + docs (architecture or build notes) when behavior changes.
-- Update related instruction files if new folders or architectural slices are introduced.
+- PR 범위를 유지하세요. 동작 변경 시 코드 + 테스트 + 문서(아키텍처 또는 빌드 참고 사항)를 포함하세요.
+- 새 폴더나 아키텍처 영역이 도입되면 관련 지침 파일을 업데이트하세요.
 
-## Do Not Repeat
-Do not inline full API route or component files in review feedback unless absolutely necessary: quote only the lines requiring change. Summarize low‑impact nits.
+## 반복하지 않기
+반드시 필요한 경우가 아니라면 검토 피드백에 API 라우트나 컴포넌트 파일 전체를 삽입하지 마세요. 변경이 필요한 줄만 인용하고 영향이 작은 사소한 사항은 요약하세요.
 
-## Escalation Order for Suggestions
-1. Security / data integrity
-2. Logical / functional correctness
-3. Performance / scalability
-4. Maintainability / duplication
-5. Readability / consistency
-6. Style / minor formatting
+## 제안 우선순위
+1. 보안 / 데이터 무결성
+2. 논리적 / 기능적 정확성
+3. 성능 / 확장성
+4. 유지 관리성 / 중복
+5. 가독성 / 일관성
+6. 스타일 / 사소한 서식
 
-## Tone & Feedback Style
-Be concise, actionable, and cite a rationale ("because" clause) for non-trivial recommendations. Offer one preferred solution; optionally a lightweight alternative.
+## 어조 및 피드백 스타일
+간결하고 실행 가능하게 작성하고 중요한 권장 사항에는 근거("왜냐하면" 절)를 제시하세요. 선호하는 해결책 하나를 제시하고 필요하면 간단한 대안을 덧붙이세요.
 
 ---
-If new subsystems are added (e.g., `mobile/`, `worker/`), create a new `*.instructions.md` with `applyTo` globs instead of bloating this file.
+새 하위 시스템(예: `mobile/`, `worker/`)이 추가되면 이 파일을 비대하게 만들지 말고 `applyTo` glob을 포함한 새 `*.instructions.md`를 만드세요.

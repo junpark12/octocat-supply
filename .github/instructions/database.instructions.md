@@ -1,38 +1,38 @@
 ---
-description: "Guidance for editing and reviewing database schema changes in the API."
+description: "API의 데이터베이스 스키마 변경을 편집하고 검토하기 위한 지침."
 applyTo: "database/migrations/**, database/seed/**, api/src/db/**"
 ---
-# Database & Schema Review Guidance
-Specialized guidance for SQLite schema evolution, migrations, and seed strategy.
+# 데이터베이스 및 스키마 검토 지침
+SQLite 스키마 발전, 마이그레이션 및 시드 전략을 위한 전문 지침입니다.
 
-## Migration Principles
-- Immutable historical migrations: never modify existing files—add a new sequential file.
-- Each migration file must be idempotent or guarded (e.g., `IF NOT EXISTS`) where feasible.
-- Provide matching DOWN/rollback strategy if environment supports manual reversal (comment rationale if impossible).
+## 마이그레이션 원칙
+- 과거 마이그레이션은 불변입니다. 기존 파일을 수정하지 말고 새 순차 파일을 추가하세요.
+- 가능한 경우 각 마이그레이션 파일은 멱등성을 갖추거나 보호 조건(예: `IF NOT EXISTS`)을 사용해야 합니다.
+- 환경에서 수동 되돌리기를 지원하면 대응하는 DOWN/롤백 전략을 제공하세요(불가능하면 이유를 주석으로 남기세요).
 
-## Schema Design Checklist
-1. Foreign keys defined with ON DELETE / ON UPDATE behavior explicitly (avoid silent cascades unless intended).
-2. Indexes on: foreign key columns, high-selectivity WHERE predicates, and composite indexes for frequent multi-column filters.
-3. Use CHECK constraints for domain invariants (non-negative quantities, valid enum sets) instead of only application code.
-4. Avoid over-normalization that complicates queries without clear benefit.
-5. Prefer INTEGER primary keys (auto-increment) unless natural key is stable & required.
+## 스키마 설계 체크리스트
+1. 외래 키의 ON DELETE / ON UPDATE 동작을 명시적으로 정의하세요(의도하지 않은 암묵적 연쇄 처리를 피하세요).
+2. 외래 키 열과 선택도가 높은 WHERE 조건에 인덱스를 두고, 자주 사용하는 다중 열 필터에는 복합 인덱스를 두세요.
+3. 도메인 불변 조건(음수가 아닌 수량, 유효한 enum 집합)은 애플리케이션 코드에만 의존하지 말고 CHECK 제약 조건으로 적용하세요.
+4. 명확한 이점 없이 쿼리를 복잡하게 만드는 과도한 정규화를 피하세요.
+5. 자연 키가 안정적이며 필수인 경우가 아니라면 INTEGER 기본 키(auto-increment)를 우선하세요.
 
-## Performance & Optimization
-- Evaluate query plans for slow endpoints (add covering indexes as needed).
-- Consider partial indexes only if table sizes grow significantly; otherwise keep simple.
+## 성능 및 최적화
+- 느린 엔드포인트의 쿼리 실행 계획을 평가하세요(필요하면 covering index 추가).
+- 테이블 크기가 크게 증가할 때만 partial index를 고려하고, 그 외에는 단순하게 유지하세요.
 
-## Seeding Guidelines
-- Deterministic: ensure seeds produce same IDs each run (explicit INSERT IDs) when referenced.
-- Keep seed data minimal but illustrative; large sample volumes belong in fixtures.
-- Update seeds when adding NOT NULL columns without defaults; ensure referential order.
+## 시드 지침
+- 결정성: 참조되는 시드 ID는 실행할 때마다 같아야 합니다(INSERT ID 명시).
+- 시드 데이터는 최소한으로 유지하면서도 대표성을 갖추고 대규모 샘플은 fixture에 두세요.
+- 기본값 없는 NOT NULL 열을 추가하면 시드를 업데이트하고 참조 순서를 지키세요.
 
-## Review Red Flags
-- Dropping and recreating tables for simple column additions (prefer ALTER when supported semantics suffice).
-- Adding wide TEXT columns without need; consider normalization or constraints.
-- Missing transaction around multi-statement data migrations altering existing rows.
+## 검토 시 경고 신호
+- 단순 열 추가를 위해 테이블을 삭제하고 다시 생성하는 경우(지원되는 동작으로 충분하면 ALTER 우선).
+- 필요 없이 큰 TEXT 열을 추가하는 경우. 정규화나 제약 조건을 고려하세요.
+- 기존 행을 변경하는 다중 문장 데이터 마이그레이션에 트랜잭션이 없는 경우.
 
-## Testing
-- Use in-memory DB for unit tests; ensure migrations run before repository tests.
+## 테스트
+- 단위 테스트에 in-memory DB를 사용하고 리포지토리 테스트 전에 마이그레이션이 실행되도록 하세요.
 
-## Example Feedback Style
-"Migration 005 adds `order_status` but seeds not updated; existing seed inserts will violate NOT NULL. Add default or modify seed file."
+## 피드백 스타일 예시
+"마이그레이션 005에서 `order_status`를 추가했지만 시드가 업데이트되지 않았습니다. 기존 시드 INSERT가 NOT NULL을 위반하므로 기본값을 추가하거나 시드 파일을 수정하세요."

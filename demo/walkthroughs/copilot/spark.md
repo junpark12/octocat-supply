@@ -1,140 +1,140 @@
-# GitHub Spark Demo Features
+# GitHub Spark 데모 기능
 
-This demo walks through how a **Product Manager** can use **GitHub Spark** to go from **idea → prototype → deployed app**, validating ideas early and collaborating seamlessly with engineering — all without leaving GitHub.
-The Spark app in this demo is a logistics overview and tracking dashboard for the OctoCat Supplies app.
+이 데모에서는 **Product Manager**가 **GitHub Spark**로 **아이디어 → 프로토타입 → 배포된 앱**까지 진행하면서 아이디어를 조기에 검증하고 엔지니어링 팀과 원활하게 협업하는 방법을 살펴봅니다. 이 모든 작업을 GitHub를 벗어나지 않고 수행합니다.
+이 데모의 Spark 앱은 OctoCat Supplies 앱을 위한 물류 현황 및 추적 대시보드입니다.
 
-## Core Values to Highlight
+## 강조할 핵심 가치
 
-- Ideas to apps without need to worry about the "how"
-- Validate ideas early
-- Rapid prototyping and seamless deployment  
-- Collaboration between product and engineering
+- 구현 "방법"을 걱정하지 않고 아이디어를 앱으로 전환
+- 아이디어 조기 검증
+- 빠른 프로토타이핑과 원활한 배포  
+- 제품 팀과 엔지니어링 팀 간 협업
 
 > [!WARNING]
-> Spark can take a good 3 - 5 minutes to generate your initial app. We recommend you prepare Step 1 ahead of time to ensure a smooth demo experience.
+> Spark가 초기 앱을 생성하는 데 3~5분 정도 걸릴 수 있습니다. 원활한 데모 진행을 위해 1단계를 미리 준비하는 것이 좋습니다.
 
 ---
 
-## 1. App Creation: From Idea to Live Prototype
+## 1. 앱 생성: 아이디어에서 실행 가능한 프로토타입으로
 
-**What to show:** Creating a full-stack prototype directly from a natural language prompt. Demonstrates Spark’s speed and accessibility for non-developers or PMs to test and share ideas quickly.  
+**보여 줄 내용:** 자연어 프롬프트에서 바로 full-stack 프로토타입을 생성합니다. 비개발자나 PM도 아이디어를 빠르게 테스트하고 공유할 수 있는 Spark의 속도와 접근성을 보여 줍니다.  
 
-1. In the Spark interface, enter one of these prompts:
+1. Spark 인터페이스에 다음 프롬프트 중 하나를 입력합니다.
 
-    Short version (less content, but faster):
-
-    ```txt
-    Create an app that provides a logistics overview and tracking dashboard for all orders from the Octocat Supplies Store. It should give individual users visibility into where each order stands—from placement to delivery or cancellation.
-    ```
-
-    Long version (more detailed content, but takes longer):
+    짧은 버전(콘텐츠는 적지만 더 빠름):
 
     ```txt
-    Create an app that provides a logistics overview and tracking dashboard for all orders from the Octocat Supplies Store. It should give individual users visibility into where each order stands—from placement to delivery or cancellation. Integrate location services and a live map view to visualize shipment routes and delivery statuses. Add search order and filtering capabilities.
+    Octocat Supplies Store의 모든 주문에 대한 물류 현황 및 추적 대시보드를 제공하는 앱을 만들어 주세요. 개별 사용자가 주문 접수부터 배송 완료 또는 취소까지 각 주문의 진행 상태를 확인할 수 있어야 합니다.
     ```
 
-2. (optional) Attach the prototype-image in [./docs/design/order-tracking-prototype.png](../../docs/design/order-tracking-prototype.png) - explain this is the design coming from Figma or any other design tool.
+    긴 버전(콘텐츠가 더 상세하지만 시간이 더 걸림):
 
-3. Submit
+    ```txt
+    Octocat Supplies Store의 모든 주문에 대한 물류 현황 및 추적 대시보드를 제공하는 앱을 만들어 주세요. 개별 사용자가 주문 접수부터 배송 완료 또는 취소까지 각 주문의 진행 상태를 확인할 수 있어야 합니다. 위치 서비스와 실시간 지도 보기를 통합하여 배송 경로와 배송 상태를 시각화해 주세요. 주문 검색 및 필터링 기능을 추가해 주세요.
+    ```
+
+2. (선택 사항) [./docs/design/order-tracking-prototype.png](../../docs/design/order-tracking-prototype.png)의 프로토타입 이미지를 첨부합니다. Figma나 다른 디자인 도구에서 가져온 디자인이라고 설명합니다.
+
+3. 제출합니다
 
 > [!TIP]
-> Reinforce that Spark eliminates setup friction — no need to manage hosting, environments, or credentials. Everything happens natively within GitHub.
+> Spark가 초기 설정의 번거로움을 없앤다는 점을 강조합니다. 호스팅, 환경, 자격 증명을 관리할 필요가 없으며 모든 작업이 GitHub 내에서 기본적으로 이루어집니다.
 
-## 2. Real-Time Editing and Component Adjustment
+## 2. 실시간 편집 및 구성 요소 조정
 
-**What to show:** Spark's **point-and-edit** experience. Demonstrates control and flexibility — PMs or engineers can refine UI and logic visually or through conversational edits.  
+**보여 줄 내용:** Spark의 **point-and-edit** 경험입니다. PM이나 엔지니어가 시각적으로 또는 대화형 편집으로 UI와 로직을 개선하는 제어 능력과 유연성을 보여 줍니다.  
 
-1. Click **"Select Element to Edit"** (top right, the cursor icon)
+1. **"Select Element to Edit"**를 클릭합니다(오른쪽 위 커서 아이콘)
 
-    ![Select Element to Edit interface](./images/spark-select-element-to-edit.png)
+    ![Select Element to Edit 인터페이스](./images/spark-select-element-to-edit.png)
 
-2. Click into the main area - mention that these edits can be manual via theme edit buttons or via Copilot Chat and natural language:
+2. 메인 영역을 클릭합니다. 테마 편집 버튼으로 수동 편집하거나 Copilot Chat과 자연어로 편집할 수 있음을 언급합니다.
 
-3. Insert the following prompt:
+3. 다음 프롬프트를 입력합니다.
 
     ```txt
-    Add icons to the status badges which represent the current state.
+    현재 상태를 나타내는 상태 배지에 아이콘을 추가해 주세요.
     ```
 
 > [!TIP]
-> Show the **mobile preview** toggle — Spark auto-optimizes layouts and lets you test responsive design instantly.
+> **모바일 미리 보기** 토글을 보여 줍니다. Spark는 레이아웃을 자동으로 최적화하고 반응형 디자인을 즉시 테스트할 수 있게 합니다.
 
-## 3. Export and Open in Codespaces
+## 3. 내보내기 및 Codespaces에서 열기
 
 > [!NOTE]
-> If you prefer to not create a repository, you can also just go ahead and show the statically created repository located at <$ registration_output.orderTrackingPrototypeRepo.html_url $>. Please do not make any changes to this repository as it is a common resource shared by all demo instances.
+> 저장소를 만들고 싶지 않다면 <$ registration_output.orderTrackingPrototypeRepo.html_url $>에 미리 생성된 정적 저장소를 보여 줘도 됩니다. 모든 데모 인스턴스가 공유하는 공통 리소스이므로 이 저장소를 변경하지 마세요.
 
-**What to show:** Transition from prototype to repository. Demonstrates how Spark fits naturally into GitHub’s developer workflow once ideas are validated.
+**보여 줄 내용:** 프로토타입에서 저장소로의 전환입니다. 아이디어가 검증된 후 Spark가 GitHub 개발자 워크플로에 자연스럽게 통합되는 방식을 보여 줍니다.
 
-1. Click **"Create Repository.”**
-2. Show the full repo structure automatically generated — frontend, backend, schema, and configuration.
-3. Click **“Open Codespace”** to open the Spark-generated app in a full dev environment.
-4. From here, developers can extend logic, integrate APIs, etc.
+1. **"Create Repository.”**를 클릭합니다.
+2. Frontend, backend, schema, configuration 등 자동으로 생성된 전체 저장소 구조를 보여 줍니다.
+3. **“Open Codespace”**를 클릭하여 Spark로 생성한 앱을 완전한 개발 환경에서 엽니다.
+4. 여기서 개발자는 로직 확장, API 통합 등을 수행할 수 있습니다.
 
 > [!TIP]
-> Reinforce that Spark isn’t a sandbox — it’s a **real, deployable full-stack app** built on the same GitHub Actions and infra developers already trust.
+> Spark가 단순한 sandbox가 아니라 개발자가 이미 신뢰하는 GitHub Actions와 인프라를 기반으로 한 **실제로 배포 가능한 full-stack 앱**이라는 점을 강조합니다.
 
-### Alternative: Use Existing Repository
+### 대안: 기존 저장소 사용
 
-## 4. Seamless Collaboration and Shareable Link
+## 4. 원활한 협업과 공유 가능한 링크
 
-**What to show:** How Spark prototypes are **instantly shareable** and collaborative. Demonstrates early stakeholder alignment and real-time iteration.
+**보여 줄 내용:** Spark 프로토타입을 **즉시 공유**하고 협업하는 방식입니다. 초기 이해관계자 조율과 실시간 반복 개선을 보여 줍니다.
 
-1. Click **Publish** and adjust visibility controls
-2. Highlight that Spark runs on secure environments in Azure — nothing to install or maintain.
-3. (optional) Use the example published app in the About section of <https://github.com/octodemo-framework/content_octocat_supply_order_tracking_prototype>
+1. **Publish**를 클릭하고 공개 범위를 조정합니다
+2. Spark가 Azure의 안전한 환경에서 실행되므로 설치하거나 유지 관리할 것이 없다는 점을 강조합니다.
+3. (선택 사항) <https://github.com/octodemo-framework/content_octocat_supply_order_tracking_prototype>의 About 섹션에 있는 게시된 앱 예제를 사용합니다
 
 > [!NOTE]
-> Collaboration stays native to GitHub — PMs, engineers, and designers all iterate together without switching tools.
+> 협업은 GitHub 내에서 이루어집니다. PM, 엔지니어, 디자이너가 도구를 전환하지 않고 함께 반복 개선합니다.
 >
 
-## 5. (optional) Use Prototype to draft a specification for main app, OctoCAT Supply
+## 5. (선택 사항) 프로토타입으로 메인 앱 OctoCAT Supply의 명세 초안 작성
 
 > [!IMPORTANT]
-> You will need an existing OctoCAT Supply demo instance repository to demonstrate this step.
+> 이 단계를 시연하려면 기존 OctoCAT Supply 데모 인스턴스 저장소가 필요합니다.
 
-**What to show:** How the Spark-generated repository can be used to draft a detailed specification for implementing it in the main application (OctoCAT Supply), showcasing how Product Managers can also leverage Spark for existing applications.
+**보여 줄 내용:** Spark로 생성한 저장소를 활용하여 메인 애플리케이션(OctoCAT Supply)에 구현할 상세 명세 초안을 작성하는 방식입니다. Product Manager가 기존 애플리케이션에도 Spark를 활용할 수 있음을 보여 줍니다.
 
-1. Open Copilot Chat (<https://github.com/copilot>)
+1. Copilot Chat(<https://github.com/copilot>)을 엽니다
 
-2. Use the following prompt to link the prototype to the main app and have Copilot draft a specification issue:
+2. 다음 프롬프트로 프로토타입을 메인 앱에 연결하고 Copilot에 명세 Issue 초안을 작성하도록 요청합니다.
 
     ```txt
-      Generate a plan to integrate the prototype I've built in @<$ demo_org.owner $>/od-octocat-supply-order-tracking-prototype into our main application at @<$ demo_org.owner $>/<$ demo_instance_name $>
+      @<$ demo_org.owner $>/od-octocat-supply-order-tracking-prototype에 만든 프로토타입을 @<$ demo_org.owner $>/<$ demo_instance_name $>의 메인 애플리케이션에 통합하는 계획을 작성해 주세요.
 
-      Capture the main use-cases and requirements from the prototype and create a sophisticated specification in an issue for the target repository that is ready for implementation. 
+      프로토타입의 주요 사용 사례와 요구 사항을 정리하고 대상 저장소의 Issue에 바로 구현 가능한 상세 명세를 작성해 주세요. 
 
-      Make sure to capture the flow and design of the prototype. Also, add the necessary model-data and required API changes in the target app.
+      프로토타입의 흐름과 디자인을 반드시 반영해 주세요. 대상 앱에 필요한 model-data와 API 변경 사항도 추가해 주세요.
 
-      Finally, put in a link to the prototype repo for the developer who works on it so they have a reference implementation, but make the plan scoped to our main repo.
+      마지막으로 담당 개발자가 참조 구현을 확인할 수 있도록 프로토타입 저장소 링크를 넣되, 계획의 범위는 메인 저장소로 한정해 주세요.
     ```
 
-    This should automatically include the link to the repositories.  Alternatively, replace the static prototype repo in the prompt with the one you've created out of spark.
+    저장소 링크가 자동으로 포함되어야 합니다. 또는 프롬프트의 정적 프로토타입 저장소를 Spark로 직접 만든 저장소로 바꿉니다.
 
-3. Create the issue in the main application repository.
+3. 메인 애플리케이션 저장소에 Issue를 생성합니다.
 
 > [!TIP]
-> **Combine demos:** You can easily combine this last step with a CCA Agent Demo by assigning the issue to it, or switch to VSCode and use the MCP Server to retrieve the issue and let Agent Mode implement it.
+> **데모 결합:** 마지막 단계의 Issue를 CCA Agent에 할당하여 해당 데모와 쉽게 결합할 수 있습니다. 또는 VSCode로 전환하고 MCP 서버로 Issue를 가져와 Agent Mode로 구현할 수 있습니다.
 
 ---
 
-## Demo Wrap-Up
+## 데모 마무리
 
-### Key takeaway
+### 핵심 요점
 
-GitHub Spark is the **fastest way to turn ideas into deployed, full-stack applications**, bridging the gap between product vision and engineering execution.  
+GitHub Spark는 **아이디어를 배포된 full-stack 애플리케이션으로 바꾸는 가장 빠른 방법**으로, 제품 비전과 엔지니어링 실행 사이의 간극을 메웁니다.  
 
-**GitHub as the AI-native developer platform** — bringing **prototyping, iteration, collaboration, and deployment** into one seamless developer experience.
+**AI 네이티브 개발자 플랫폼인 GitHub**는 **프로토타이핑, 반복 개선, 협업, 배포**를 하나의 원활한 개발자 경험으로 통합합니다.
 
-### Core Value Recap
+### 핵심 가치 요약
 
-| Value                     | Impact                                            |
+| 가치                      | 효과                                              |
 | ------------------------- | ------------------------------------------------- |
-| Rapid Iteration           | Edit prompts or components and see changes live   |
-| Seamless Deployment       | Infra handled automatically — ready in seconds    |
-| Collaborative Development | PMs + engineers co-create in one workflow         |
-| Mobile Testing            | Built-in responsiveness and preview tools         |
-| Exportability             | Full repo export and Codespaces-ready             |
-| Early Validation          | Share instantly, collect feedback, iterate faster |
+| 빠른 반복 개선            | 프롬프트나 구성 요소를 편집하고 실시간으로 변경 확인 |
+| 원활한 배포               | 인프라 자동 처리로 몇 초 만에 준비                 |
+| 협업 개발                 | 하나의 워크플로에서 PM과 엔지니어가 공동 제작      |
+| 모바일 테스트             | 기본 제공 반응형 기능과 미리 보기 도구             |
+| 내보내기 지원             | 전체 저장소 내보내기 및 Codespaces 사용 준비       |
+| 조기 검증                 | 즉시 공유하고 피드백을 수집하여 더 빠르게 개선    |
 
 ---

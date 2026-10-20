@@ -1,23 +1,23 @@
-# Code Injection Vulnerability Demo
+# Code Injection 취약점 데모
 
-This prompt demonstrates how to introduce a Code injection vulnerability into the Delivery API for demonstration purposes. **WARNING: This creates an intentional security vulnerability that should NEVER be used in production code.**
+이 프롬프트는 데모 목적으로 Delivery API에 Code injection 취약점을 도입하는 방법을 보여 줍니다. **경고: 의도적으로 보안 취약점을 만드는 예제이며, 프로덕션 코드에서는 절대로 사용하면 안 됩니다.**
 
-## Overview
+## 개요
 
-We are going to add a new logic block that is supposed to show how a command can be executed when updating the status of a delivery. This execution will be vulnerable to exploitation, allowing an attacker to inject arbitrary code into the application.
+배송 상태를 업데이트할 때 명령이 실행되는 방식을 보여 주는 새 로직 블록을 추가합니다. 이 실행 방식에는 악용 가능한 취약점이 있어 공격자가 애플리케이션에 임의의 코드를 주입할 수 있습니다.
 
-### New Branch
+### 새 브랜치
 
-First create a new branch for the vulnerable implementation, called `code-injection-demo`. If this branch exists, create a new one with a different name like `code-injection-demo-1` or similar.
+먼저 취약한 구현을 위한 `code-injection-demo` 브랜치를 만드세요. 이미 존재하면 `code-injection-demo-1`과 같은 다른 이름으로 새 브랜치를 만드세요.
 
 ```bash
 git checkout -b <branch_name>
 ```
 
-### Create a Vulnerable Block
+### 취약한 블록 만들기
 
 
-Update `api/src/routes/delivery.ts`, replacing the existing `router.put('/:id/status')` method. The vulnerable code uses `exec()` from `child_process` to run a user-supplied `notifyCommand` without any sanitization:
+`api/src/routes/delivery.ts`에서 기존 `router.put('/:id/status')` 메서드를 교체하세요. 이 취약한 코드는 `child_process`의 `exec()`를 사용하여 사용자가 제공한 `notifyCommand`를 정제 없이 실행합니다.
 
 ```typescript
 // Update api/src/routes/delivery.ts, replacing the existing router.put('/:id/status') method
@@ -56,9 +56,9 @@ router.put('/:id/status', async (req, res, next) => {
 ```
 
 
-**This vulnerability is for educational purposes only. Never deploy code with Code injection vulnerabilities to production.**
+**이 취약점은 교육 목적으로만 사용합니다. Code injection 취약점이 있는 코드를 프로덕션에 배포하지 마세요.**
 
-### Push and Create a PR
+### Push 및 PR 만들기
 
 ```bash
 git add .
@@ -66,4 +66,4 @@ git commit -m "Add Code injection vulnerability for demo"
 git push origin <branch_name>
 ```
 
-Then, create a pull request (PR) from the `<branch_name>` branch to the main branch in the GitHub repository.
+그런 다음 GitHub 리포지토리에서 `<branch_name>` 브랜치에서 main 브랜치로 향하는 pull request(PR)를 만드세요.

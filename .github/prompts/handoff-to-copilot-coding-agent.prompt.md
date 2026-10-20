@@ -1,91 +1,91 @@
 ---
-description: 'Scans the current chat history, strips noise, writes a concise GitHub Issue for GitHub Copilot Coding Agent'
+description: '현재 채팅 기록을 살펴보고 불필요한 내용을 제거하여 GitHub Copilot Coding Agent를 위한 간결한 GitHub 이슈를 작성합니다'
 tools: ['search', 'web/githubRepo', 'read', 'azure-mcp-server/search', 'github/*', 'github-remote/*']
 ---
 
 <!--
-INTERNAL THOUGHTS – not shown to the user.
-1. Parse the entire chat transcript supplied by VS Code.
-2. Extract SIGNAL → decisions, requirements, designs, pending work, acceptance criteria, technical constraints.
-   Discard NOISE → debug logs, obsolete ideas, tool calls, transient snippets, repeated questions, thinking-out-loud moments.
-3. Identify and preserve:
-   - File paths mentioned or modified
-   - Code snippets that represent the desired solution
-   - Dependencies and integration points
-   - Performance or security requirements
-4. Categorize findings into:
-   A. Task overview (business value & user story)
-   B. Technical Requirements
-   C. In-Flight Work
-   D. Known Issues / Risks
-   E. Next Actions
-   F. Success Criteria
-   G. Resource Links
-5. If there's no meaningful context or actionable work, do not proceed and notify the user with specific guidance.
-6. If you don't have access to GitHub Tools, notify the user and ask them to install GitHub Remote MCP server with installation instructions.
-7. Create **only** the issue below and provide a confirmation in the chat with the issue URL.
-8. Do not ask for confirmation, go ahead and create the issue in GitHub Repository.
-9. Use appropriate GitHub labels if available (e.g., 'enhancement', 'bug', 'documentation').
+내부 사고 과정 – 사용자에게 표시하지 않습니다.
+1. VS Code에서 제공한 전체 채팅 기록을 파싱하세요.
+2. 유의미한 정보 추출 → 결정, 요구 사항, 디자인, 미완료 작업, 인수 기준, 기술 제약 조건.
+   불필요한 내용 제거 → 디버그 로그, 폐기된 아이디어, 도구 호출, 일시적인 스니펫, 반복 질문, 소리 내어 생각한 내용.
+3. 다음을 식별하고 보존하세요.
+   - 언급되거나 수정된 파일 경로
+   - 원하는 해결책을 나타내는 코드 스니펫
+   - 의존성 및 통합 지점
+   - 성능 또는 보안 요구 사항
+4. 발견 사항을 다음으로 분류하세요.
+   A. 작업 개요(비즈니스 가치 및 사용자 스토리)
+   B. 기술 요구 사항
+   C. 진행 중인 작업
+   D. 알려진 문제 / 위험
+   E. 다음 작업
+   F. 성공 기준
+   G. 자료 링크
+5. 유의미한 맥락이나 실행 가능한 작업이 없으면 진행하지 말고 구체적인 안내와 함께 사용자에게 알리세요.
+6. GitHub Tools에 접근할 수 없으면 사용자에게 알리고 설치 지침과 함께 GitHub Remote MCP server 설치를 요청하세요.
+7. 아래 이슈만 만들고 채팅에 이슈 URL과 함께 완료 확인을 제공하세요.
+8. 확인을 요청하지 말고 GitHub 리포지토리에 바로 이슈를 만드세요.
+9. 사용 가능한 적절한 GitHub 레이블(예: 'enhancement', 'bug', 'documentation')을 사용하세요.
 -->
 
-## Process
+## 절차
 
-1. Follow the INTERNAL THOUGHTS process, prepare an issue for GitHub Copilot Coding Agent.
-   - Use the provided issue template.
-   - Ensure the issue is concise and actionable.
-   - Include all relevant details from the chat history.
-   - Add context about the current codebase state if relevant.
-2. Use GitHub tools to create an issue in the current repository
-3. Assign the issue to Copilot Coding Agent
-4. Add appropriate labels based on the work type
-5. Provide the user with the confirmation and issue link
+1. 내부 사고 과정에 따라 GitHub Copilot Coding Agent를 위한 이슈를 준비하세요.
+   - 제공된 이슈 템플릿을 사용하세요.
+   - 이슈를 간결하고 실행 가능하게 작성하세요.
+   - 채팅 기록의 관련 세부 정보를 모두 포함하세요.
+   - 관련이 있으면 현재 코드베이스 상태에 대한 맥락을 추가하세요.
+2. GitHub 도구로 현재 리포지토리에 이슈를 만드세요.
+3. 이슈를 Copilot Coding Agent에 할당하세요.
+4. 작업 유형에 맞는 레이블을 추가하세요.
+5. 사용자에게 완료 확인과 이슈 링크를 제공하세요.
 
-# Issue Template
+# 이슈 템플릿
 
 ```markdown
-## 1. Task Overview
-<!-- Business value, user story, and expected outcome. Keep it concise (≤ 10 lines) -->
-**User Story**: As a [role], I want [feature] so that [benefit].
-**Business Value**: 
+## 1. 작업 개요
+<!-- 비즈니스 가치, 사용자 스토리, 예상 결과. 간결하게 작성하세요(10줄 이하). -->
+**사용자 스토리**: [역할]로서 [이점]을 얻기 위해 [기능]을 원합니다.
+**비즈니스 가치**: 
 
-## 2. Technical Requirements
-<!-- Specific technical constraints, APIs to use, patterns to follow -->
-- [ ] Must comply with existing architecture patterns
-- [ ] Performance requirements: 
-- [ ] Security considerations:
-- [ ] Integration points:
+## 2. 기술 요구 사항
+<!-- 구체적인 기술 제약 조건, 사용할 API, 따라야 할 패턴 -->
+- [ ] 기존 아키텍처 패턴 준수 필수
+- [ ] 성능 요구 사항: 
+- [ ] 보안 고려 사항:
+- [ ] 통합 지점:
 
-## 3. In-Flight Work
-<!-- Bullet list of tasks currently underway with file paths -->
-- File: `path/to/file.ts` - [description of changes]
-- Component: `ComponentName` - [status]
+## 3. 진행 중인 작업
+<!-- 파일 경로를 포함한 현재 진행 중인 작업의 글머리 기호 목록 -->
+- 파일: `path/to/file.ts` - [변경 내용 설명]
+- 컴포넌트: `ComponentName` - [상태]
 
-## 4. Known Issues / Risks
-<!-- Bugs, blockers, design concerns, technical debt -->
-- **Issue**: [description] | **Impact**: [high/medium/low] | **Mitigation**: [approach]
+## 4. 알려진 문제 / 위험
+<!-- 버그, 차단 요인, 설계 우려 사항, 기술 부채 -->
+- **문제**: [설명] | **영향**: [높음/중간/낮음] | **완화 방안**: [접근법]
 
-## 5. Next Actions (Immediate TODOs)
-<!-- Checklist tasks. Be specific with file paths and methods when possible -->
-- [ ] Update `src/api/controller.ts` to handle new endpoint
-- [ ] Add unit tests for [specific functionality]
-- [ ] Update documentation in `docs/api.md`
+## 5. 다음 작업(즉시 처리할 TODO)
+<!-- 체크리스트 작업. 가능하면 파일 경로와 메서드를 구체적으로 명시하세요. -->
+- [ ] 새 엔드포인트를 처리하도록 `src/api/controller.ts` 업데이트
+- [ ] [특정 기능]의 단위 테스트 추가
+- [ ] `docs/api.md` 문서 업데이트
 
-## 6. Success Criteria
-<!-- How do we know when this task is complete? -->
-- [ ] All unit tests pass (`npm run test:api`)
-- [ ] Code builds without errors (`npm run build`)
-- [ ] Feature works as described in acceptance criteria
-- [ ] Documentation is updated
+## 6. 성공 기준
+<!-- 작업 완료 여부를 어떻게 판단하나요? -->
+- [ ] 모든 단위 테스트 통과(`npm run test:api`)
+- [ ] 오류 없이 코드 빌드(`npm run build`)
+- [ ] 인수 기준에 명시된 대로 기능 작동
+- [ ] 문서 업데이트
 
-## 7. Documentation & Resources
-<!-- Links to specs, diagrams, prior PRs, related issues -->
-- Architecture: [Architecture Document](../docs/architecture.md)
-- Related PR: #
-- Design mockup: 
-- API documentation:
+## 7. 문서 및 자료
+<!-- 명세, 다이어그램, 이전 PR, 관련 이슈 링크 -->
+- 아키텍처: [아키텍처 문서](../docs/architecture.md)
+- 관련 PR: #
+- 디자인 목업: 
+- API 문서:
 
-## 8. Code Context
-<!-- Key code snippets or patterns from the discussion -->
+## 8. 코드 맥락
+<!-- 논의에서 나온 주요 코드 스니펫 또는 패턴 -->
 ```typescript
 // Example of the agreed implementation approach
 ```

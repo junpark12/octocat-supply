@@ -1,106 +1,106 @@
 # Copilot Spaces
 
 - [Copilot Spaces](#copilot-spaces)
-  - [Demo: Compliance Space Demos](#demo-compliance-space-demos)
-    - [Compliance Space Demo 1: General Copilot Spaces Questions](#compliance-space-demo-1-general-copilot-spaces-questions)
-    - [Compliance Space Demo 2: Combine a space and codebase for compliance assessment](#compliance-space-demo-2-combine-a-space-and-codebase-for-compliance-assessment)
-    - [Compliance Space Demo 3: Use Spaces MCP to check specific code for compliance](#compliance-space-demo-3-use-spaces-mcp-to-check-specific-code-for-compliance)
-      - [Enabling Spaces Tools in MCP](#enabling-spaces-tools-in-mcp)
+  - [데모: 규정 준수 Space 데모](#데모-규정-준수-space-데모)
+    - [규정 준수 Space 데모 1: 일반적인 Copilot Spaces 질문](#규정-준수-space-데모-1-일반적인-copilot-spaces-질문)
+    - [규정 준수 Space 데모 2: Space와 코드베이스를 결합한 규정 준수 평가](#규정-준수-space-데모-2-space와-코드베이스를-결합한-규정-준수-평가)
+    - [규정 준수 Space 데모 3: Spaces MCP로 특정 코드의 규정 준수 확인](#규정-준수-space-데모-3-spaces-mcp로-특정-코드의-규정-준수-확인)
+      - [MCP에서 Spaces 도구 활성화](#mcp에서-spaces-도구-활성화)
 
-## Demo: Compliance Space Demos
+## 데모: 규정 준수 Space 데모
 
-The Copilot Spaces demo revolves around the `OD OctoCAT Supply Compliance Docs` space, which is fed by a repository of the same name: `od-octocat-supply-compliance-docs`. You can find both in the organization of your demo repository.
+Copilot Spaces 데모는 같은 이름의 저장소인 `od-octocat-supply-compliance-docs`에서 자료를 가져오는 `OD OctoCAT Supply Compliance Docs` Space를 중심으로 진행됩니다. 둘 다 데모 저장소의 조직에서 찾을 수 있습니다.
 
 > [!IMPORTANT]
-> **Do not change the Space or Repo!:** Both are static resources shared by all demos in your demo environment. Please do not change or modify them, as this will impact other demos.
+> **Space나 저장소를 변경하지 마세요!:** 둘 다 데모 환경의 모든 데모가 공유하는 정적 리소스입니다. 다른 데모에 영향을 주므로 변경하거나 수정하지 마세요.
 
-The space and its documents are designed to be a realistic example of the legal, security, and compliance-related rules and guidelines that a software development team in an enterprise must follow.
+이 Space와 문서는 enterprise의 소프트웨어 개발 팀이 따라야 하는 법률, 보안 및 규정 준수 관련 규칙과 가이드라인의 현실적인 예제로 설계되었습니다.
 
-There are several demos included that you can perform individually or in the sequence presented here.
+여러 데모가 포함되어 있으며 개별적으로 또는 여기에 제시된 순서대로 진행할 수 있습니다.
 
 > [!NOTE]
-> **A note on model choice:** The choice of model makes a significant difference in the structure and length of the answers:
+> **모델 선택 참고:** 모델 선택에 따라 답변 구조와 길이가 크게 달라집니다.
 >
-> - `GPT-4` is extremely chatty and goes into detail. This is good if the purpose of the prompt is to feed information back to an AI assistant (e.g., for issue generation or coding) to provide all relevant context, but it's less ideal for a human to read through.
-> - `Gemini 1.5 Pro` on the other hand is much more concise and to the point, which is often preferable for humans.
-> - `Claude 3 Sonnet` is somewhere in between, but also tends to be more concise.
+> - `GPT-4`는 매우 장황하고 상세합니다. 프롬프트의 목적이 AI assistant에 관련 컨텍스트를 모두 제공하기 위한 정보 전달(예: Issue 생성이나 코딩)이라면 좋지만 사람이 읽기에는 덜 적합합니다.
+> - 반면 `Gemini 1.5 Pro`는 훨씬 간결하고 핵심적이어서 사람이 읽기에 더 나은 경우가 많습니다.
+> - `Claude 3 Sonnet`은 그 중간 정도이지만 역시 더 간결한 편입니다.
 >
-> Feel free to experiment with other models as well.
+> 다른 모델도 자유롭게 실험해 보세요.
 
-### Compliance Space Demo 1: General Copilot Spaces Questions
+### 규정 준수 Space 데모 1: 일반적인 Copilot Spaces 질문
 
-1. Navigate to `/copilot/spaces` and, in the Organization Tab, find the `OD OctoCAT Supply Compliance Docs` space.
-2. Highlight the sophisticated instructions used to tune Copilot's behavior for compliance questions. You can also show the contents and repository, making it clear that compliance docs are often long and complex.
-3. Ask the following question (the `Gemini 1.5 Pro` model is recommended):
-
-    ```txt
-    I need to implement a cookie banner. What do I need to keep in mind from a compliance perspective?
-    ```
-
-4. Showcase how Copilot is able to extract relevant information from the compliance docs and provide a comprehensive answer, as well as cite its sources for further investigation.
-
-### Compliance Space Demo 2: Combine a space and codebase for compliance assessment
-
-1. Navigate to `/copilot/` (Note: not `/copilot/spaces`).
-2. Attach both the Copilot Space `OD OctoCAT Supply Compliance Docs` and your demo repository as additional context.
-3. Prompt using `GPT-4` (very chatty) or `Gemini 1.5 Pro` (more concise):
+1. `/copilot/spaces`로 이동한 후 Organization 탭에서 `OD OctoCAT Supply Compliance Docs` Space를 찾습니다.
+2. 규정 준수 질문에 대한 Copilot 동작을 조정하는 정교한 지침을 강조합니다. 콘텐츠와 저장소를 보여 주며 규정 준수 문서가 대체로 길고 복잡하다는 점을 설명할 수도 있습니다.
+3. 다음 질문을 합니다(`Gemini 1.5 Pro` 모델 권장).
 
     ```txt
-    Please assess my repository's readiness in terms of compliance before we can ship it.
-    What gaps are still there that we need to fill before we can release our webshop?
-
-    Be thorough, please analyze the existing PRs and Issues to see what we've already covered - and list what we still need to implement.
+    쿠키 배너를 구현해야 합니다. 규정 준수 관점에서 무엇을 고려해야 하나요?
     ```
 
-4. Showcase how it will yield a comprehensive compliance assessment of the codebase, referencing specific files and PRs, while also generating a list of things that need to be done to make the codebase compliant before general availability (GA).
-5. Prompt again:
+4. Copilot이 규정 준수 문서에서 관련 정보를 추출하고 포괄적인 답변과 추가 조사를 위한 출처를 제공하는 모습을 보여 줍니다.
+
+### 규정 준수 Space 데모 2: Space와 코드베이스를 결합한 규정 준수 평가
+
+1. `/copilot/`로 이동합니다(`/copilot/spaces`가 아님에 주의).
+2. Copilot Space `OD OctoCAT Supply Compliance Docs`와 데모 저장소를 모두 추가 컨텍스트로 첨부합니다.
+3. `GPT-4`(매우 장황함) 또는 `Gemini 1.5 Pro`(더 간결함)를 사용하여 요청합니다.
 
     ```txt
-    Okay, can you help me group all those required steps a bit better and make it more concise?
+    출시 전에 저장소의 규정 준수 준비 상태를 평가해 주세요.
+    웹 쇼핑몰을 출시하기 전에 아직 보완해야 할 부분은 무엇인가요?
 
-    Generate a list of actionable items to tackle, group them into phases, and prioritize them. What is a blocker for GA (Phase 0), what is required soon after GA (Phase 1), and what can we leave for later (Phase 2)?
+    철저하게 검토해 주세요. 기존 PR과 Issue를 분석하여 이미 처리한 내용을 확인하고 아직 구현해야 하는 항목을 나열해 주세요.
     ```
 
-6. Showcase how Copilot will again use the space's information to prioritize and group the compliance tasks into actionable phases.
-7. Lastly, prompt it to draft a sophisticated list of parent and sub-issues for all these tasks:
+4. 특정 파일과 PR을 참조한 포괄적인 코드베이스 규정 준수 평가와 함께, 정식 출시(GA) 전에 규정 준수를 위해 완료해야 할 작업 목록을 생성하는 모습을 보여 줍니다.
+5. 다시 요청합니다.
 
     ```txt
-    Now please generate issues for me.
+    좋아요. 필요한 모든 단계를 더 체계적으로 묶고 더 간결하게 정리해 줄 수 있나요?
 
-    Create one parent issue as an Epic titled "Become Compliant", then add all the other tasks as sub-issues with all the details. Mark them clearly for the different phases.
+    실행 가능한 작업 목록을 만들고 단계별로 묶어 우선순위를 정해 주세요. GA를 막는 항목(Phase 0), GA 직후 필요한 항목(Phase 1), 나중으로 미룰 수 있는 항목(Phase 2)은 무엇인가요?
     ```
 
-8. It is up to you to generate those issues and then start assigning them to Copilot Coding Agent for implementation.
+6. Copilot이 Space의 정보를 다시 활용하여 규정 준수 작업에 우선순위를 지정하고 실행 가능한 단계로 묶는 모습을 보여 줍니다.
+7. 마지막으로 모든 작업에 대한 상세한 상위 Issue 및 하위 Issue 목록 초안을 요청합니다.
 
-### Compliance Space Demo 3: Use Spaces MCP to check specific code for compliance
+    ```txt
+    이제 Issue를 생성해 주세요.
+
+    "Become Compliant"라는 제목의 Epic으로 상위 Issue 하나를 만들고 나머지 모든 작업을 상세 내용과 함께 하위 Issue로 추가해 주세요. 각 단계를 명확하게 표시해 주세요.
+    ```
+
+8. 해당 Issue를 실제로 생성한 후 구현을 위해 Copilot Coding Agent에 할당할지는 자유롭게 선택합니다.
+
+### 규정 준수 Space 데모 3: Spaces MCP로 특정 코드의 규정 준수 확인
 
 > [!IMPORTANT]
-> Only the GitHub Remote MCP currently has the Copilot Spaces tools available. Also, as they are not part of the default toolset, you'll have to specifically configure them. If you don't have it working, follow the [instructions below](#enabling-spaces-tools-in-mcp). In the delivered Codespace, this is already configured as `github-remote`.
+> 현재 Copilot Spaces 도구는 GitHub Remote MCP에서만 사용할 수 있습니다. 기본 도구 모음에 포함되어 있지 않으므로 별도로 구성해야 합니다. 작동하지 않으면 [아래 지침](#mcp에서-spaces-도구-활성화)을 따르세요. 제공된 Codespace에는 이미 `github-remote`로 구성되어 있습니다.
 
-Demo walkthrough steps:
+데모 실습 단계:
 
-1. Check out the repository and ensure you have the `github-remote` MCP server running.
-2. Check out the `feature-add-tos-download` branch.
-3. Open Copilot Chat and switch to `Agent` mode, using the `GPT-4` or `Gemini 1.5 Pro` model.
-4. Enter the following prompt:
-
-    ```txt
-    Get the contents of the Copilot Space `OD OctoCAT Supply Compliance Docs`. Once you have those, please analyze my current changes in the PR: Did we include all the necessary languages for the Terms of Service download?
-    ```
-
-5. Additional prompts at your disposal:
+1. 저장소를 checkout하고 `github-remote` MCP 서버가 실행 중인지 확인합니다.
+2. `feature-add-tos-download` 브랜치를 checkout합니다.
+3. Copilot Chat을 열고 `GPT-4` 또는 `Gemini 1.5 Pro` 모델을 사용하여 `Agent` 모드로 전환합니다.
+4. 다음 프롬프트를 입력합니다.
 
     ```txt
-    Check if we have all the necessary legal disclaimers included in our Privacy Policy update.
+    Copilot Space `OD OctoCAT Supply Compliance Docs`의 콘텐츠를 가져와 주세요. 가져온 후 PR의 현재 변경 사항을 분석해 주세요. 서비스 약관 다운로드에 필요한 모든 언어를 포함했나요?
+    ```
+
+5. 사용할 수 있는 추가 프롬프트:
+
+    ```txt
+    개인정보 처리방침 업데이트에 필요한 모든 법적 고지 사항이 포함되어 있는지 확인해 주세요.
     ```
 
     ```txt
-    We need to implement a Cookie Banner. Implement it according to the compliance requirements we have in our Copilot Space `OD OctoCAT Supply Compliance Docs`.
+    쿠키 배너를 구현해야 합니다. Copilot Space `OD OctoCAT Supply Compliance Docs`의 규정 준수 요구 사항에 따라 구현해 주세요.
     ```
 
-#### Enabling Spaces Tools in MCP
+#### MCP에서 Spaces 도구 활성화
 
-The Copilot Spaces Tools are **not** enabled in the default toolset of the GitHub Remote MCP Server. To enable them, you have to use the `X-MCP-Toolsets: copilot_spaces` header in your `.vscode/mcp.json` file. As you might want to combine it with other tools, here is an example config:
+Copilot Spaces 도구는 GitHub Remote MCP Server의 기본 도구 모음에서 활성화되어 있지 **않습니다**. 활성화하려면 `.vscode/mcp.json` 파일에서 `X-MCP-Toolsets: copilot_spaces` 헤더를 사용해야 합니다. 다른 도구와 함께 사용할 수 있도록 구성 예제를 제시합니다.
 
 ```json
 "github-remote": {
@@ -112,7 +112,7 @@ The Copilot Spaces Tools are **not** enabled in the default toolset of the GitHu
 },
 ```
 
-You could also just configure a dedicated MCP server entry for Copilot Spaces only, if you want to keep things separate:
+별도로 유지하려면 Copilot Spaces만을 위한 전용 MCP 서버 항목을 구성할 수도 있습니다.
 
 ```json
 "github-copilot-spaces": {
@@ -124,4 +124,4 @@ You could also just configure a dedicated MCP server entry for Copilot Spaces on
 },
 ```
 
-For a full documentation, refer to the [github/github-mcp-server documentation](https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md?tab=readme-ov-file#additional-remote-server-toolsets).
+전체 내용은 [github/github-mcp-server 문서](https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md?tab=readme-ov-file#additional-remote-server-toolsets)를 참조하세요.

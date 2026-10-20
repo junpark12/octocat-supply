@@ -1,17 +1,19 @@
 # TypeScript API Observability Framework (TAO)
 
-TAO is our lightweight, powerful observability framework designed specifically for TypeScript-based APIs. It provides seamless integration of metrics, traces, and logs with minimal configuration.
+TAO는 TypeScript 기반 API를 위해 특별히 설계한 가볍고 강력한 observability framework입니다. 최소한의 설정으로 metric, trace, log를 원활하게 통합합니다.
 
-## Features
+<a id="features"></a>
+## 기능
 
-- 🔄 Auto-instrumentation for Express.js routes
-- 📊 Built-in metrics collection (response times, error rates, request counts)
-- 🔍 Distributed tracing with OpenTelemetry compatibility
-- 📝 Structured logging with context correlation
-- 🎯 Custom metric decorators
-- 🔌 Pluggable backend support (Prometheus, Jaeger, ELK)
+- 🔄 Express.js route의 auto-instrumentation
+- 📊 내장 metric 수집(응답 시간, 오류율, 요청 수)
+- 🔍 OpenTelemetry와 호환되는 distributed tracing
+- 📝 context correlation을 지원하는 structured logging
+- 🎯 사용자 지정 metric decorator
+- 🔌 교체 가능한 backend 지원(Prometheus, Jaeger, ELK)
 
-## Quick Start
+<a id="quick-start"></a>
+## 빠른 시작
 
 ```typescript
 import { initTAO, observe } from '@tao/core';
@@ -29,9 +31,10 @@ const app = express();
 app.use(observe());
 ```
 
-## Decorators
+<a id="decorators"></a>
+## Decorator
 
-TAO provides decorators for fine-grained observability:
+TAO는 세밀한 observability를 위한 decorator를 제공합니다.
 
 ```typescript
 import { Measure, Trace, Log } from '@tao/core';
@@ -46,7 +49,8 @@ class UserService {
 }
 ```
 
-## Custom Metrics
+<a id="custom-metrics"></a>
+## 사용자 지정 metric
 
 ```typescript
 import { MetricRegistry } from '@tao/core';
@@ -61,9 +65,10 @@ const requestCounter = MetricRegistry.counter({
 requestCounter.inc({ endpoint: '/api/users', status: '200' });
 ```
 
-## Trace Context
+<a id="trace-context"></a>
+## Trace context
 
-TAO automatically propagates trace context across service boundaries using W3C Trace Context headers:
+TAO는 W3C Trace Context header를 사용하여 서비스 경계를 넘어 trace context를 자동으로 전파합니다.
 
 ```typescript
 import { getTraceContext, withContext } from '@tao/core';
@@ -77,7 +82,8 @@ async function makeDownstreamCall() {
 }
 ```
 
-## Configuration
+<a id="configuration"></a>
+## 설정
 
 ```typescript
 initTAO({
@@ -98,10 +104,11 @@ initTAO({
 });
 ```
 
-## Best Practices
+<a id="best-practices"></a>
+## 권장 사항
 
-1. **Use Meaningful Names**: Choose descriptive names for metrics and traces
-2. **Add Labels**: Include relevant labels for better filtering and aggregation
-3. **Sample Wisely**: Configure appropriate sampling rates for high-traffic services
-4. **Correlate Data**: Use trace IDs in logs for better debugging
-5. **Monitor Resource Usage**: Enable built-in resource metrics collection
+1. **의미 있는 이름 사용**: metric과 trace에 내용을 잘 설명하는 이름을 선택하세요.
+2. **Label 추가**: 필터링과 집계를 개선하도록 관련 label을 포함하세요.
+3. **적절한 sampling**: traffic이 많은 서비스에 적절한 sampling rate를 설정하세요.
+4. **데이터 연계**: 디버깅을 개선하도록 log에 trace ID를 사용하세요.
+5. **Resource 사용량 모니터링**: 내장 resource metric 수집을 활성화하세요.

@@ -1,41 +1,41 @@
-# Agent Hooks Demo
+# Agent Hooks 데모
 
-This walkthrough demonstrates how to use **Agent Hooks** to automate workflows and enforce governance policies in the AI-assisted development process.
+이 실습에서는 **Agent Hooks**를 사용하여 AI 지원 개발 과정에서 워크플로를 자동화하고 거버넌스 정책을 적용하는 방법을 보여 줍니다.
 
-## What are Agent Hooks?
+## Agent Hooks란?
 
-Agent Hooks allow execution of arbitrary commands or scripts at specific points in the Copilot Agent lifecycle. These hooks enable sophisticated workflows such as:
+Agent Hooks는 Copilot Agent 수명 주기의 특정 시점에 임의의 명령이나 스크립트를 실행할 수 있게 합니다. 이러한 hook은 다음과 같은 고급 워크플로를 지원합니다.
 
-- **Audit Logging**: Recording prompts and session events for compliance.
-- **Automated Checkpoints**: Creating git commits after each agent session.
-- **Validation**: Running linters or tests before allowing the agent to proceed.
+- **감사 로깅**: 규정 준수를 위해 프롬프트와 세션 이벤트를 기록합니다.
+- **자동 체크포인트**: 각 agent 세션이 끝난 후 git commit을 생성합니다.
+- **검증**: agent가 진행하도록 허용하기 전에 linter나 테스트를 실행합니다.
 
-Hooks are defined in `.github/hooks/hooks.json` and support lifecycle events including `sessionStart`, `UserPromptSubmit`, and `Stop`.
+Hook은 `.github/hooks/hooks.json`에 정의되며 `sessionStart`, `UserPromptSubmit`, `Stop` 등의 수명 주기 이벤트를 지원합니다.
 
-## Demo 1: Audit Logging
+## 데모 1: 감사 로깅
 
-- **What to Show:** How Start-, Prompt- and Stop-Hooks log agent activity to a file.
-- **Why:** Demonstrate the extensibility of Agent Hooks. This simple file-logging example illustrates how organizations can integrate Agent activity with their internal compliance systems, metrics dashboards, or governance tools.
-- **How:**
-  1. Open `.github/hooks/hooks.json` and explain the `sessionStart`, `UserPromptSubmit` and `Stop` hook configuration.
-  2. Open Copilot Chat (Agent Mode) and ask a prompt like:
+- **보여 줄 내용:** Start, Prompt, Stop hook이 agent 활동을 파일에 기록하는 방식입니다.
+- **이유:** Agent Hooks의 확장성을 보여 줍니다. 이 간단한 파일 로깅 예제는 조직에서 Agent 활동을 내부 규정 준수 시스템, 메트릭 대시보드 또는 거버넌스 도구와 통합하는 방법을 설명합니다.
+- **방법:**
+  1. `.github/hooks/hooks.json`을 열고 `sessionStart`, `UserPromptSubmit`, `Stop` hook 구성을 설명합니다.
+  2. Copilot Chat(Agent Mode)을 열고 다음과 같은 프롬프트를 입력합니다.
 
      ```txt
-     What frameworks are used in this project?
+     이 프로젝트에는 어떤 프레임워크가 사용되나요?
      ```
 
-  3. Open `.agent.log` (or run `cat .agent.log` in terminal) to show the captured timestamped entries.
+  3. `.agent.log`를 열어(또는 터미널에서 `cat .agent.log`를 실행하여) 타임스탬프가 포함된 기록을 보여 줍니다.
 
-## Demo 2: Automated Checkpoints
+## 데모 2: 자동 체크포인트
 
-- **What to Show:** Enable the "checkpoint commit" hook and show how it can automatically safeguards work at the end of every agent session.
-- **Why:** Demonstrate how hooks can smoothen the developer experience by providing flow mechanisms like auto-commits.
+- **보여 줄 내용:** "checkpoint commit" hook을 활성화하고 매 agent 세션이 끝날 때 작업을 자동으로 보호하는 방식을 보여 줍니다.
+- **이유:** Hook이 자동 commit과 같은 흐름 메커니즘으로 개발자 경험을 개선하는 방법을 보여 줍니다.
 
-### Option 1: Quick Visual Demo
+### 옵션 1: 빠른 시각적 데모
 
-- **How:**
-  1. Open `.github/hooks/hooks.json`.
-  2. Locate the `Stop` event section and **uncomment** the `checkpoint-commit.sh` block:
+- **방법:**
+  1. `.github/hooks/hooks.json`을 엽니다.
+  2. `Stop` 이벤트 섹션을 찾아 `checkpoint-commit.sh` 블록의 **주석을 해제**합니다.
 
      ```jsonc
      // comment this in if you want automatic commits after each agent session
@@ -47,33 +47,33 @@ Hooks are defined in `.github/hooks/hooks.json` and support lifecycle events inc
      }
      ```
 
-  3. Ask Copilot to make a visible change:
+  3. Copilot에 눈에 띄는 변경을 요청합니다.
 
      ```
-     Add two rocket emojis 🚀🚀 to the title in the README.
+     README 제목에 로켓 이모지 두 개 🚀🚀를 추가해 주세요.
      ```
 
-  4. Wait for the agent to finish.
-  5. Show the **Source Control** view or run `git log -1` to verify a new commit exists with the timestamp and message.
+  4. Agent가 완료할 때까지 기다립니다.
+  5. **Source Control** 보기를 표시하거나 `git log -1`을 실행하여 타임스탬프와 메시지가 포함된 새 commit이 있는지 확인합니다.
 
-### Option 2: Complex Workflow (With Skills)
+### 옵션 2: 복합 워크플로(Skills 사용)
 
-- **How:**
-  1. Ensure the checkpoint hook is enabled (see Option 1).
-  2. Go through the [Agent Skills](./agent-skills.md) walkthrough to set up the `api-endpoint` skill.
-  3. Point out that the massive amount of generated code (Models, Routes, Tests) is neatly encapsulated in a single "checkpoint" commit, separating it from previous work.
+- **방법:**
+  1. 체크포인트 hook이 활성화되어 있는지 확인합니다(옵션 1 참조).
+  2. [Agent Skills](./agent-skills.md) 실습을 진행하여 `api-endpoint` skill을 설정합니다.
+  3. 대량으로 생성된 코드(Model, Route, Test)가 하나의 "checkpoint" commit으로 깔끔하게 묶여 이전 작업과 분리됨을 강조합니다.
 
-## Key Takeaways
+## 핵심 요점
 
-| Feature                | Benefit                                                                                 |
+| 기능                   | 이점                                                                                    |
 | :--------------------- | :-------------------------------------------------------------------------------------- |
-| **Audit Logs**         | Automatic compliance and usage tracking without developer intervention.                 |
-| **Checkpoint Commits** | "Save game" functionality for AI coding. Never lose good code; easily undo bad code.    |
-| **Extensibility**      | Allows sophisticated and deterministic execution for all lifecycles of an agent session |
+| **감사 로그**         | 개발자 개입 없이 규정 준수와 사용 현황을 자동으로 추적합니다.                            |
+| **체크포인트 Commit** | AI 코딩을 위한 "게임 저장" 기능입니다. 좋은 코드는 보존하고 잘못된 코드는 쉽게 되돌립니다. |
+| **확장성**            | Agent 세션의 모든 수명 주기에서 고급 기능을 결정적으로 실행할 수 있습니다.               |
 
 ---
 
-## Related Resources
+## 관련 자료
 
 - [Agent Skills](./agent-skills.md)
-- [Copilot Custom Instructions](./copilot.md)
+- [Copilot 사용자 지정 지침](./copilot.md)
