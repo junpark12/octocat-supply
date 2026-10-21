@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
+import ProductRating from './ProductRating';
 
 interface Product {
   productId: number;
@@ -190,6 +191,9 @@ export default function Products() {
                     {product.description}
                   </p>
                   <div className="space-y-4 mt-auto">
+                    <div className={darkMode ? 'text-light' : 'text-gray-800'}>
+                      <ProductRating productId={product.productId} productName={product.name} />
+                    </div>
                     <div className="flex justify-between items-center">
                       {hasDiscount ? (
                         <div>
